@@ -1,0 +1,97 @@
+{% extends "master.twig" %}
+
+{% block head %}
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+
+    <!-- Custom styling plus plugins -->
+    <link href="css/custom.min.css" rel="stylesheet">
+
+{% endblock head %}
+
+{% block title %} Class Registrations{% endblock title %}
+
+{% block content %}
+    <label for="class" style="font-size: large;">Choose a Class to View its Registrations</label>
+    <form action="/registrations" method="get" id="classes">
+        <select name="class" id="class" onchange="jQuery('#classes').submit();">
+            {% for class in classes %}
+                {% if selectedClass  is defined and class.classID == selectedClass.classID %}
+                    <option value="{{ class.classID }}" selected>{{ class.className|capitalize }}</option>
+                {% else %}
+                <option value="{{ class.classID }}">{{ class.className|capitalize }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </form>
+
+        <div class="row">
+            <div class="col-md-12" style="width: 100%">
+                <div class="x_panel">
+                    <div class="x_title">
+    {% if selectedClass and users == false %}
+                        <h2>OOPS! No Users Are Registered for {{ selectedClass.className|capitalize }}!</h2>
+                        <div class="clearfix"></div>
+                    </div>
+    {% elseif selectedClass== false %}
+        <h2>Please Select a Class!</h2>
+        <div class="clearfix"></div>
+        </div>
+    {% elseif selectedClass and users %}
+                        <h2>User Registered for {{ class.className }}!</h2>
+                        <form style="margin: 0; border-left: 1px solid #5F656A;" role="search" method="get" class="search-form" action="/registrations">
+                            <label style="display: inline-block;">
+                                <span class="screen-reader-text">Search for:</span>
+                                <input style="margin: 0;" type="search" class="search-field" placeholder="Search …" value="" name="keyword">
+                            </label>
+
+                            <input type="hidden" name="classID" id="classID" value="{{ class.classID }}">
+                            <input type="submit" class="search-submit" value="Search">
+                        </form>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                        <div class="row">
+
+                            {% for user in users %}
+                                <div class="col-md-2" style="margin-bottom: 5%;">
+                                    <div class="thumbnail">
+                                        <div class="image view view-first">
+                                            <img style="width: 100%; display: block;" src="images/{{ user.picture }}" alt="image" />
+                                            <div class="mask">
+                                                <p>Email User?</p>
+                                                <div class="tools tools-bottom">
+                                                    {#EMAILLLLL!!!#}
+                                                    <a href="/email"><i class="fa fa-pencil"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="caption">
+                                            <p style="color: black; font-size: large; font-weight: bold;">{{ user.name }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        </div>
+
+
+
+    {% endif %}
+
+{% endblock content %}
+
+{% block info %}
+{% endblock info %}
+

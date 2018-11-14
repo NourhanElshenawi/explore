@@ -1,0 +1,240 @@
+{% extends "master.twig" %}
+
+{% block head %}
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="css/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .split {
+            display: inline-block;
+        }
+
+
+
+    </style>
+
+    {#<script src="js/jquery.js"></script>#}
+    <script src="js/bootstrap.js"></script>
+
+{% endblock head %}
+
+{% block title %} Edit Schedule {% endblock title %}
+
+{% block content %}
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+        {#<div class="col-md-12">#}
+        <div class="x_panel2">
+            <div class="x_title">
+                <h2 style="width: auto; margin-right: 3%;">Gym Buddies</h2>
+
+                <button class="fa fa-plus add" style="display:inline-block; margin-top: 1%; border-radius: 25px;"></button>
+                <p style="display: inline-block; color: red; font-size: large; opacity: 0.85;">{{ result }}</p>
+
+                <form style="margin: 0; border-left: 1px solid #5F656A;" role="search" method="get" class="search-form" action="/myfriends">
+                    <label style="display: inline-block;">
+                        <span class="screen-reader-text">Search for:</span>
+                        <input style="margin: 0;" type="search" class="search-field" placeholder="Search …" value="" name="keyword">
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+
+                <div class="clearfix"></div>
+            </div>
+            <div>
+                {#class="x_content"#}
+                {#<p>Simple table with project listing with progress and editing options</p>#}
+
+                <table class="addClass">
+                    <thead>
+                    <tr>
+                        <th>Email</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <form method="post" action="/addFriend">
+                        <tr>
+                            <td>
+                                <input type="email" style="width: 100%;" name="email" id="email" required>
+                            </td>
+
+                        <tr colspan="8">
+                            <td>
+                                <button type="submit" id="addClass"> Add Buddy</button>
+                            </td>
+                        </tr>
+
+                    </form>
+                    </tbody>
+                </table>
+
+
+                <!-- start project list -->
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Registered Classes</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+
+                    {% for friend in friends %}
+                        <tr style="padding: 0;">
+
+                            <td colspan="4" style="border: none; padding: 0;">
+
+                                <div class="x_panel" style="padding: 0;">
+
+                                    <div class="x_title" style="padding: 4px; border-bottom: none;">
+
+                                        {#<h2>Stripped table <small>Stripped table subtitle</small></h2>#}
+                                        <div class="split" style="width: 5%; margin: 0;">
+                                            {{ loop.index }}
+                                        </div>
+
+                                        <div class="split" style=" width: 10%; margin-right: 20%">
+                                            <p>{{ friend.name|title }}</p>
+                                        </div>
+
+                                        <div class="split" style="vertical-align: middle">
+                                            <ul class="list-inline">
+                                                {% for class in friend.classes %}
+                                                    <li>
+                                                        <p style="display: inline-block;">{{ class.name|title }} </p>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                <a class="close-link delete" value="{{ friend.friendID }}">
+                                                    <i class="fa fa-close"></i></a>
+
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- end project list -->
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+    <script>
+        jQuery(document).ready(function() {
+
+            jQuery('.addClass').toggle();
+            jQuery('.add').click(function() {
+                jQuery('.addClass').toggle();
+
+            });
+
+            jQuery('.delete').click(function () {
+                if (confirm("Are you sure you want to remove your friend?")) {
+                    jQuery(this).closest('.x_panel').remove();
+                    jQuery.ajax(
+                            {
+                                type: 'POST',
+                                url: '/removeFriend',
+                                data: {
+                                    followsID: jQuery(this).attr('value')
+                                },
+                                success: function (data) {
+                                    console.log(data);
+                                    console.log(JSON.parse(data));
+                                    alert(JSON.parse(data)['msg']);
+                                }
+                            }
+                    );
+                }
+
+            });
+
+            function toggle($this) {
+
+                var $BOX_PANEL = jQuery($this).closest('.x_panel'),
+                        $ICON = jQuery($this).find('i'),
+                        $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+//            console.log($ICON);
+                if ($BOX_PANEL.attr('style')) {
+                    $BOX_CONTENT.slideToggle(200, function(){
+                        $BOX_PANEL.removeAttr('style');
+
+                        $ICON.toggleClass('fa-chevron-down');
+                        $ICON.addClass('fa-chevron-up');
+                    });
+                } else {
+                    $BOX_CONTENT.slideToggle(200);
+                    $BOX_PANEL.css('height', 'auto');
+                    $ICON.toggleClass('fa-chevron-up');
+                    $ICON.addClass('fa-chevron-down');
+                }
+
+                jQuery('.x_title').css('border-bottom', '2px solid');
+
+            }
+
+
+        });
+
+    </script>
+
+
+
+
+
+    <!-- jQuery -->
+    {#<script src="js/jquery.min.js"></script>#}
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/bootstrap-progressbar.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/custom.min.js"></script>
+
+{% endblock content %}
+
+{% block info %}
+    {#{{ include('info.twig') }}#}
+{% endblock info %}
+

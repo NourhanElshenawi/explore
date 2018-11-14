@@ -1,0 +1,622 @@
+{% extends "master.twig" %}
+
+{% block head %}
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="css/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .split {
+            display: inline-block;
+        }
+
+
+
+    </style>
+
+    {#<script src="js/jquery.js"></script>#}
+    <script src="js/bootstrap.js"></script>
+
+{% endblock head %}
+
+{% block title %} Edit Schedule {% endblock title %}
+
+{% block content %}
+
+    {#{{ dump(allInstructors) }}#}
+
+    {% set classExample = classes|first %}
+    <div class="clearfix"></div>
+
+    <div class="row">
+        {#<div class="col-md-12">#}
+        <div class="x_panel2">
+            <div class="x_title">
+                <h2 style="width: auto; margin-right: 3%;">Classes</h2>
+
+                <button class="fa fa-plus add" style="display:inline-block; margin-top: 1%; border-radius: 25px;"></button>
+                <p style="display: inline-block; color: red; font-size: large; opacity: 0.85;">{{ result }}</p>
+
+                <form style="margin: 0; border-left: 1px solid #5F656A;" role="search" method="get" class="search-form" action="/editschedule">
+                    <label style="display: inline-block;">
+                        <span class="screen-reader-text">Search for:</span>
+                        <input style="margin: 0;" type="search" class="search-field" placeholder="Search …" value="" name="keyword">
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+
+                <div class="clearfix"></div>
+            </div>
+            <div>
+                {#class="x_content"#}
+                {#<p>Simple table with project listing with progress and editing options</p>#}
+
+                <table class="addClass">
+                    <thead>
+                        <tr>
+
+                            <th>Name</th>
+                            <th>Instructor</th>
+                            <th>Start Time</th>
+                            <th>End Time</th>
+                            <th>Period</th>
+                            <th>Capacity</th>
+                            <th>Location</th>
+                            <th>Days</th>
+
+                        </tr>
+                    </thead>
+                        <tbody>
+                        <form method="post" action="/addclass">
+                            <tr>
+                                <td>
+                                    <input type="text" style="width: 100%;" name="name" id="name" required>
+                                </td>
+
+                                <td>
+                                    <select name="instructorID" id="instructor" style="width: 100%;" name="instructor" required>
+                                        {% for instructor in allInstructors %}
+                                            <option value="{{ instructor.id }}">{{ instructor.name|capitalize|capitalize }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <input type="time" id="startTime" min="07:00:00" max="23:00:00" style="width: 100%;" name="startTime" required>
+                                </td>
+
+                                <td>
+                                    <input type="time" id="endTime" min="07:00:00" max="23:00:00" style="width: 100%;" name="endTime" required>
+                                </td>
+
+                                <td>
+                                    <select name="period" id="period" style="width: 100%;" name="period" required>
+                                        <option value="fall">Fall Semester</option>
+                                        <option value="spring">Spring Semester</option>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <input type="number" id="capacity" min="1" style="width: 100%;" name="capacity" required>
+                                </td>
+
+                                <td>
+                                    <input type="text" id="location" style="width: 100%;" name="location" required>
+                                </td>
+
+                                <td>
+                                    <select name="days[]" id="days" multiple style="width: 120%;"required>
+                                        {{ classExample.name }}
+                                        {% for key, value in classExample.days %}
+                                            <option value="{{ key }}"> {{ key|capitalize}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </td>
+                                 {#</form>#}
+                            </tr>
+
+
+                            <tr colspan="8">
+                                <td>
+                                    <button type="submit" id="addClass"> Add Class</button>
+                                </td>
+                            </tr>
+
+                                 </form>
+                        </tbody>
+                    </table>
+
+
+                <!-- start project list -->
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+
+                        <th>#</th>
+                        <th>Class Name</th>
+
+                        <th>Sample of Users Registered</th>
+                        <th>Class Registration Capacity</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+
+                    {% for class in classes %}
+                        <tr style="padding: 0;">
+
+                            <td colspan="4" style="border: none; padding: 0;">
+
+                                <div class="x_panel" style="padding: 0;">
+
+                                    <div class="x_title" style="padding: 4px; border-bottom: none;">
+
+                                        {#<h2>Stripped table <small>Stripped table subtitle</small></h2>#}
+                                        <div class="split" style="width: 5%; margin: 0;">
+                                            {{ loop.index }}
+                                        </div>
+
+                                        <div class="split" style="width: 32%; margin: 0;">
+                                            <a>{{ class.className }}</a>
+                                            <br />
+                                            <small>Instructor Name: {{ class.instructorName|capitalize }}
+                                            </small>
+                                        </div>
+
+                                        <div class="split" style="width: 25%; margin: 0;">
+                                            <ul class="list-inline">
+                                                {% for user in class.users %}
+                                                    <li>
+                                                        <a href="/adminsearchusers?keyword={{ user.id }}">
+                                                            <img src="images/{{ user.picture }}" class="avatar" alt="Avatar" value="{{ user.name }}">
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+
+                                        <div class="split" style="width: 25%; margin: 0;">
+                                            <div class="project_progress">
+                                                <div class="progress progress_sm">
+                                                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{ class.currentCapacityPercentage }}"></div>
+                                                </div>
+                                                <small>
+                                                    {{ class.currentCapacityPercentage }}% Complete
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            <li>
+                                                <a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                            </li>
+                                            <li class="dropdown">
+                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                                    <i class="fa fa-wrench"></i>
+                                                </a>
+                                                <ul class="dropdown-menu" role="menu">
+
+                                                    {#<form action="/editclass" method="post" style="margin: 0;">#}
+                                                    <li>
+
+                                                        <input type="hidden" id="edit" name="edit" value="{{ class.classID }}">
+                                                        <a href="#" class="edit" value="{{ class.classID }}">Edit Class</a>
+
+                                                    </li>
+                                                    <li>
+                                                        <input type="hidden" name="hold" value="{{ class.classID }}">
+                                                        <a href="#" class="hold" value="{{ class.classID }}" >Hold</a>
+                                                    </li>
+
+                                                    {#</form>#}
+                                                </ul>
+                                            </li>
+                                            <li>
+                                                <a class="close-link delete" value="{{ class.classID }}">
+                                                    <i class="fa fa-close"></i></a>
+
+                                            </li>
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div class="x_content update" style="padding: 0; display: none;">
+
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Instructor</th>
+                                                <th>Start Time/24:00</th>
+                                                <th>End Time/24:00</th>
+                                                <th>Max. Capacity</th>
+                                                <th>Current Capacity</th>
+                                                <th>Location</th>
+                                                <th>Period</th>
+                                                <th>Days</th>
+                                                <th>  </th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+
+                                                <td>
+                                                    {{ class.instructorName|capitalize }}
+                                                </td>
+                                                <td>{{ class.startTime }}</td>
+                                                <td>{{ class.endTime }}</td>
+                                                <td>{{ class.capacity }}</td>
+                                                <td>{{ class.currentCapacity }}</td>
+                                                <td>{{ class.location }}</td>
+                                                <td>{{ class.period }}</td>
+                                                <td>
+                                                    <ul>
+                                                        {% for key, value in class.days %}
+                                                            {% if value == 1 %}
+                                                                <li>{{ key|capitalize }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </td>
+
+                                                <td></td>
+                                            </tr>
+                                            <tr style="display: none;" class="updateInfo">
+                                                <form action="/updateclass" method="post">
+
+                                                    <td>
+                                                        {#make sure to add that#}
+                                                        {#<input type="" id="endTime" name="instructor" min="08:00" max="21:00" value="{{ class.endTime }}">#}
+                                                        <select name="instructor" id="" style="width: 100%;">
+                                                            {% for instructor in allInstructors %}
+                                                                {% if instructor.id == class.instructorID %}
+                                                                    <option value="{{ instructor.id }}" selected>{{ instructor.name|capitalize }} </option>
+                                                                {% else %}
+
+                                                                    <option value="{{ instructor.id }}">{{ instructor.name|capitalize }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+
+                                                    <td>
+                                                        <input style="width: 100%;" type="time" id="startTime" name="startTime" min="08:00" max="21:00" value="{{ class.startTime }}">
+                                                    </td>
+
+                                                    <td>
+                                                        <input style="width: 100%;" type="time" id="endTime" name="endTime" min="08:00" max="21:00" value="{{ class.endTime }}">
+                                                    </td>
+
+                                                    <td>
+                                                        <input style="width: 100%;" type="number" id="capacity" name="capacity" min="1" max="30" value="{{ class.capacity }}">
+                                                    </td>
+
+                                                    <td>
+                                                        {{ class.currentCapacity }}
+                                                    </td>
+
+                                                    <td>
+                                                        <input style="width: 100%;" type="text" id="location" name="location" value="{{ class.location }}">
+                                                    </td>
+
+                                                    <td>
+                                                        <select name="period" id="period" style="width: 100%;" name="period" required>
+
+                                                            {% if class.period == "fall" %}
+                                                                <option value="fall" selected>Fall Semester</option>
+                                                                <option value="spring">Spring Semester</option>
+                                                            {% else %}
+                                                                <option value="fall">Fall Semester</option>
+                                                                <option value="spring" selected>Spring Semester</option>
+                                                            {% endif %}
+                                                        </select>
+                                                    </td>
+
+                                                    <td>
+                                                        <select name="" id="" multiple>
+                                                            {% for key, value in class.days %}
+                                                                {% if value == 1 %}
+
+                                                                    <option value="{{ key }}" selected> {{ key|capitalize }}</option>
+                                                                {% else %}
+
+                                                                    <option value="{{ key }}"> {{ key|capitalize }}</option>
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </select>
+                                                    </td>
+
+                                                    <td>
+                                                        <input style="width: 100%;" type="hidden" name="id" value="{{ class.classID }}">
+
+                                                        {#remove unnecessary attributes#}
+                                                        <button type="submit" value="{{ class.classID }}">Update</button>
+                                                    </td>
+
+
+
+                                                </form>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- end project list -->
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+    <script>
+        jQuery(document).ready(function() {
+            console.log("HIII");
+
+            jQuery('.collapse-link').click(function() {
+                toggle(this);
+
+            });
+
+        });
+        jQuery('.addClass').toggle();
+        jQuery('.add').click(function() {
+            jQuery('.addClass').toggle();
+
+        });
+
+        jQuery('.edit').click(function() {
+
+            toggleOnce(this);
+            jQuery(this).toggleClass('fa-chevron-down');
+            jQuery(this).find('i').toggleClass('fa-chevron-up');
+            jQuery('.updateInfo').toggle();
+
+        });
+        jQuery('.delete').click(function() {
+            if (confirm("Are you sure you want to delete this class?")) {
+                jQuery(this).closest('.x_panel').remove();
+                jQuery.ajax(
+                        {
+                            type: 'POST',
+                            url: '/deleteclass',
+                            data: {
+                                id: jQuery(this).attr('value')
+                            },
+                            success: function (msg) {
+                                console.log("SUCCESS AJAX!");
+                            }
+                        }
+                );
+            }
+
+        });
+
+        function toggle($this) {
+
+            var $BOX_PANEL = jQuery($this).closest('.x_panel'),
+                    $ICON = jQuery($this).find('i'),
+                    $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+//            console.log($ICON);
+            if ($BOX_PANEL.attr('style')) {
+                $BOX_CONTENT.slideToggle(200, function(){
+                    $BOX_PANEL.removeAttr('style');
+
+                    $ICON.toggleClass('fa-chevron-down');
+                    $ICON.addClass('fa-chevron-up');
+                });
+            } else {
+                $BOX_CONTENT.slideToggle(200);
+                $BOX_PANEL.css('height', 'auto');
+                $ICON.toggleClass('fa-chevron-up');
+                $ICON.addClass('fa-chevron-down');
+            }
+
+            jQuery('.x_title').css('border-bottom', '2px solid');
+
+        }
+
+        function toggleOnce($this) {
+
+            var $BOX_PANEL = jQuery($this).closest('.x_panel'),
+//                    $ICON = jQuery($this).parent().parent().parent().first().find('i'),
+                    $ICON = jQuery($this).closest('.collapse-link'),
+                    $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+            if ($BOX_PANEL.attr('style')) {
+                $BOX_CONTENT.slideToggle(200, function(){
+                    $BOX_PANEL.removeAttr('style');
+
+
+                    console.log($ICON);
+                    $ICON.toggleClass('fa-chevron-down');
+                    console.log($ICON);
+                    $ICON.addClass('fa-chevron-up');
+                    console.log($ICON);
+                });
+            }
+
+            $ICON.toggleClass('fa-chevron-down');
+            $ICON.toggleClass('fa-chevron-up');
+
+        }
+
+        function toggleUpdate($this) {
+
+            var $B = jQuery($this).closest('.x_content').closest('.x_content');
+            console.log($B);
+
+        }
+
+
+    </script>
+
+    <script>
+        jQuery('.edit').click(function() {
+
+            var $id = jQuery(this).attr('value');
+
+            jQuery(this).closest('.x_content').css('display','block');
+            jQuery(this).closest('.x_content').css('style','');
+
+        });
+
+        $("#addClass").on("submit", function (event) {
+            event.preventDefault();
+            // your code...
+
+
+//        jQuery('#addClass').submit(function() {
+
+            var name = jQuery('#name').val();
+            var instructor = jQuery('#instructor').val();
+            var startTime = jQuery('#startTime').val();
+            var endTime = jQuery('#endTime').val();
+            var period = jQuery('#period').val();
+            var capacity = jQuery('#capacity').val();
+            var location = jQuery('#location').val();
+            var days = jQuery('#days').val();
+            var monday;
+            if(jQuery.inArray('monday',jQuery('#days').val())>-1){
+                monday =1;
+                    } else {
+                        monday =0;
+            }
+
+            var tuesday;
+            if(jQuery.inArray('tuesday',jQuery('#days').val())>-1){
+                tuesday =1;
+            } else {
+                tuesday=0;
+            }
+
+            var wednesday;
+            if(jQuery.inArray('wednesday',jQuery('#days').val())>-1){
+                wednesday=1;
+            } else {
+                wednesday=0;
+            }
+            var thursday;
+            if(jQuery.inArray('thursday',jQuery('#days').val())>-1){
+                thursday=1;
+            } else {
+                thursday=0;
+            }
+            var friday;
+            if(jQuery.inArray('friday',jQuery('#days').val())>-1){
+                friday=1;
+            }else {
+                friday=0;
+            }
+
+            console.log(jQuery.inArray('friday',jQuery('#days').val()));
+
+            console.log(name);
+            console.log(instructor);
+            console.log(startTime);
+            console.log(endTime);
+            console.log(period);
+            console.log(capacity);
+            console.log(location);
+            console.log(monday);
+            console.log(tuesday);
+            console.log(wednesday);
+            console.log(thursday);
+            console.log(friday);
+            console.log(jQuery('#days').val());
+
+            jQuery.ajax({
+                type: "POST",
+                url: '/addclass',
+                data: {
+                    name: name,
+                    instructorID: instructor,
+                    startTime: startTime,
+                    endTime: endTime,
+                    period: period,
+                    capacity: capacity,
+                    location: location,
+//                    monday: monday,
+//                    tuesday: tuesday,
+//                    wednesday: wednesday,
+//                    tuesday: tuesday,
+//                    wednesday: wednesday,
+//                    thursday: thursday,
+//                    friday: friday
+                    days: days
+                },
+                success: function (msg) {
+
+                    console.log('Success Message: ' + msg);
+                    if(isArray(msg)){
+                        alert("There is a conflict with the following class(es):\n"+
+                                jQuery.parseJSON(msg)['name']);
+                    }
+                    alert(jQuery.parseJSON(msg));
+
+                }
+            });
+
+//        });
+
+
+        });
+
+
+
+
+    </script>
+
+
+
+
+
+    <!-- jQuery -->
+    {#<script src="js/jquery.min.js"></script>#}
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/bootstrap-progressbar.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/custom.min.js"></script>
+
+
+
+
+{% endblock content %}
+
+{% block info %}
+    {#{{ include('info.twig') }}#}
+{% endblock info %}
+

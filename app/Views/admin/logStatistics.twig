@@ -1,0 +1,627 @@
+{% extends "master.twig" %}
+
+
+{% block head %}
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    {#<link href="css/font-awesome.min.css" rel="stylesheet">#}
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    {#<link href="css/custom.min.css" rel="stylesheet">#}
+
+
+{% endblock head %}
+
+    {% block title %} Visitation Stats{% endblock title %}
+
+
+{% block content %}
+
+    {#{{ dump(months) }}#}
+
+    <div>
+        <ul class="nav nav-tabs">
+            <li id="years" role="presentation" class="active"><a style="font-weight: bold; font-size: large;">Years</a></li>
+            <li id="months" role="presentation"><a style="font-weight: bold; font-size: large;">Months</a></li>
+            <li id="days" role="presentation"><a style="font-weight: bold; font-size: large;">Days</a></li>
+            <li id="hours" role="presentation"><a style="font-weight: bold; font-size: large;">Hours</a></li>
+        </ul>
+
+        <div style="margin: auto;">
+            <h2>Filter The Statistics Using The Filters Below</h2>
+            <label for="gender">Choose gender: </label>
+            <select name="gender" id="gender" style="display: block;" required>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="b">Both</option>
+            </select>
+            <label for="allAge" style="display: inline-block;">All Ages: </label>
+            <input type="checkbox" name="allAge" id="allAge" checked onclick="if(jQuery('#allAge').is(':checked')){
+                jQuery('#ageUpper').attr('disabled', 'disabled');
+                jQuery('#ageLower').attr('disabled', 'disabled');
+            } else {
+                jQuery('#ageUpper').removeAttr('disabled');
+                jQuery('#ageLower').removeAttr('disabled');
+            }
+            ; ">
+            <label for="age" style="display: inline-block;"> OR Select Age Range: </label>
+            <p style="display: inline-block;">From:</p>
+            <input type="number" min="16" name="age" id="ageUpper" value="16" disabled>
+            <p style="display: inline-block;">To:</p>
+            <input type="number" min="16" name="age" id="ageLower" value="80" disabled>
+            <br>
+            <input type="checkbox" name="staff" id="staff" value="staff"> Staff
+            <input type="checkbox" name="student" id="student" value="student"> Student
+            <input type="checkbox" name="faculty" id="faculty" value="faculty"> Faculty
+            <input type="checkbox" name="external" id="external" value="external"> External Paying Customer
+            <input type="checkbox" name="alumni" id="alumni" value="alumni"> Alumni
+            <input type="checkbox" name="admin" id="admin" value="admin"> Admin
+
+            <input type="submit" id="filter">
+        </div>
+
+        <div id="yearDiv" style="width: 80%; height: 50%; margin: 0;">
+            <br>
+            <h2>Visitation Ranking by Busiest Year</h2>
+            <canvas id="yearChart"></canvas>
+        </div>
+
+
+        <div id="monthsDiv" style="width: 80%; height: 50%; margin: 0; display: none;">
+            <br>
+            <h2>Visitation Ranking by Busiest Month</h2>
+            <canvas id="monthChart"></canvas>
+        </div>
+
+
+        <div id="daysDiv" style="width: 80%; height: 50%; margin: 0; display: none;">
+            <br>
+            <h2>Visitation Ranking by Busiest Day</h2>
+            <canvas id="dayChart"></canvas>
+        </div>
+
+        <div id="hoursDiv" style="width: 80%; height: 50%; margin: 0; display: none;">
+            <br>
+            <h2>Visitation Ranking by Busiest Hour</h2>
+            <canvas id="hourChart"></canvas>
+        </div>
+
+    </div>
+
+    <script src="js/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="js/Chart.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="js/custom.min.js"></script>
+
+
+    <script>
+        jQuery('#months').click(function() {
+            jQuery(this).toggleClass('active');
+            jQuery('#years').removeClass('active');
+            jQuery('#days').removeClass('active');
+            jQuery('#hours').removeClass('active');
+            jQuery('#monthsDiv').css('display','');
+            jQuery('#yearDiv').css('display','none');
+            jQuery('#daysDiv').css('display','none');
+            jQuery('#hoursDiv').css('display','none');
+        });
+        jQuery('#years').click(function() {
+            jQuery(this).toggleClass('active');
+            jQuery('#months').removeClass('active');
+            jQuery('#days').removeClass('active');
+            jQuery('#hours').removeClass('active');
+            jQuery('#yearDiv').css('display','');
+            jQuery('#hoursDiv').css('display','none');
+            jQuery('#monthsDiv').css('display','none');
+            jQuery('#daysDiv').css('display','none');
+        });
+        jQuery('#days').click(function() {
+            jQuery(this).toggleClass('active');
+            jQuery('#years').removeClass('active');
+            jQuery('#months').removeClass('active');
+            jQuery('#hours').removeClass('active');
+            jQuery('#daysDiv').css('display','');
+            jQuery('#hoursDiv').css('display','none');
+            jQuery('#monthsDiv').css('display','none');
+            jQuery('#yearDiv').css('display','none');
+        });
+
+        jQuery('#hours').click(function() {
+            jQuery(this).toggleClass('active');
+            jQuery('#years').removeClass('active');
+            jQuery('#months').removeClass('active');
+            jQuery('#days').removeClass('active');
+            jQuery('#hoursDiv').css('display','');
+            jQuery('#daysDiv').css('display','none');
+            jQuery('#monthsDiv').css('display','none');
+            jQuery('#yearDiv').css('display','none');
+        });
+
+    </script>
+
+    <script>
+        yearsvals = '{{ years|json_encode|raw }}';
+        var yearsvalsEncoded = jQuery.parseJSON(yearsvals);
+        var ctx = document.getElementById("yearChart");
+        var yearChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(yearsvalsEncoded),
+                datasets: [
+                    {
+                        label: '# of Visits',
+                        backgroundColor: "#26B99A",
+                        data: Object.values(yearsvalsEncoded)
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor:  'white'
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor:  'white'
+                        }
+                    }]
+                }
+            }
+        });
+
+
+        vals = '{{ months|json_encode|raw }}';
+        var valsEncoded = jQuery.parseJSON(vals);
+        var ctx = document.getElementById("monthChart");
+        var monthChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(valsEncoded),
+                datasets: [
+                    {
+                        label: '# of Visits',
+                        backgroundColor: "#26B99A",
+                        data: Object.values(valsEncoded)
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor:  'white'
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor:  'white'
+                        }
+                    }]
+                }
+            }
+        });
+
+        daysVals = '{{ days|json_encode|raw }}';
+        var daysValsEncoded = jQuery.parseJSON(daysVals);
+        var ctx = document.getElementById("dayChart");
+        var dayChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(daysValsEncoded),
+                datasets: [
+                    {
+                        label: '# of Visits',
+                        backgroundColor: "#26B99A",
+                        data: Object.values(daysValsEncoded)
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor:  'white'
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor:  'white'
+                        }
+                    }]
+                }
+            }
+        });
+
+        hoursVals = '{{ hours|json_encode|raw }}';
+        var hoursValsEncoded = jQuery.parseJSON(hoursVals);
+        var ctx = document.getElementById("hourChart");
+        var hourChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: Object.keys(hoursValsEncoded),
+                datasets: [
+                    {
+                        label: '# of Visits',
+                        backgroundColor: "#26B99A",
+                        data: Object.values(hoursValsEncoded)
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor:  'white'
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor:  'white'
+                        }
+                    }]
+                }
+            }
+        });
+
+        jQuery('#filter').click(function () {
+            console.log("dfsgdfg");
+
+            //checking for gender
+            var genderInput = document.getElementById("gender");
+            var genderValue = genderInput.options[genderInput.selectedIndex].value;
+            console.log(genderValue);
+
+            //checking for user type filters
+            var studentInput = jQuery('#student');
+            var studentValue = studentInput.is(':checked');
+
+            if(studentValue == true){
+                studentValue=1;
+            }else {
+                studentValue=0;
+            }
+            console.log(studentValue);
+
+            var staffInput = jQuery('#staff');
+            var staffValue = staffInput.is(':checked');
+
+            if(staffValue == true){
+                staffValue=1;
+            }else {
+                staffValue=0;
+            }
+            console.log(staffValue);
+
+            var alumniInput = jQuery('#alumni');
+            var alumniValue = alumniInput.is(':checked');
+            if(alumniValue == true){
+                alumniValue=1;
+            }else {
+                alumniValue=0;
+            }
+            console.log(alumniValue);
+
+            var externalInput = jQuery('#external');
+            var externalValue = externalInput.is(':checked');
+
+            if(externalValue == true){
+                externalValue=1;
+            }else {
+                externalValue=0;
+            }
+
+            console.log(externalValue);
+
+            var adminInput = jQuery('#admin');
+            var adminValue = adminInput.is(':checked');
+
+            if(adminValue == true){
+                adminValue=1;
+            }else {
+                adminValue=0;
+            }
+            console.log(adminValue);
+
+            var facultyInput = jQuery('#faculty');
+            var facultyValue = facultyInput.is(':checked');
+
+            if(facultyValue == true){
+                facultyValue=1;
+            }else {
+                facultyValue=0;
+            }
+            console.log(facultyValue);
+
+            //get age range
+            var year = new Date().getFullYear();
+            console.log(year);
+            if (jQuery('#allAge').is(':checked')){
+                console.log("CHECKED");
+            } else {
+                var ageLower = 2016 - jQuery('#ageLower').val();
+                var ageUpper = 2016 - jQuery('#ageUpper').val();
+                var ageLower = ageLower + "-01-01";
+                var ageUpper = ageUpper + "-12-31";
+            }
+
+            console.log(ageLower);
+            console.log(ageUpper);
+
+            yearsVals = '{{ years|json_encode|raw }}';
+            var yearsValsEncoded = jQuery.parseJSON(yearsVals);
+            if (jQuery('#years').hasClass('active')){
+                yearChart.destroy();
+                console.log("YEARS ACTIVE");
+                jQuery.ajax({
+                    type: "POST",
+                    url: '/adminstatsyear',
+                    data: {
+                        gender: genderValue,
+                        ageUpper: ageUpper,
+                        ageLower: ageLower,
+                        student: studentValue,
+                        staff: staffValue,
+                        alumni: alumniValue,
+                        faculty: facultyValue,
+                        external: externalValue,
+                        admin: adminValue
+                    },
+                    success: function (year) {
+                        console.log('Success Message: ' + year);
+                        yearsValsEncoded = jQuery.parseJSON(year);
+                        console.log(yearsValsEncoded);
+                        Chart.defaults.global.legend = {
+                            enabled: false
+                        };
+                        var ctx = document.getElementById("yearChart");
+                        var yearChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: Object.keys(yearsValsEncoded),
+                                datasets: [
+                                    {
+                                        label: '# of Visits',
+                                        backgroundColor: "#26B99A",
+                                        data: Object.values(yearsValsEncoded)
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            fontColor:  'white'
+                                        }
+                                    }],
+                                    xAxes: [{
+                                        ticks: {
+                                            fontColor:  'white'
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            if (jQuery('#months').hasClass('active')){
+                monthChart.destroy();
+                console.log("MONTHS ACTIVE");
+                jQuery.ajax({
+                    type: "POST",
+                    url: '/adminstatsmonth',
+                    data: {
+                        gender: genderValue,
+                        ageUpper: ageUpper,
+                        ageLower: ageLower,
+                        student: studentValue,
+                        staff: staffValue,
+                        alumni: alumniValue,
+                        faculty: facultyValue,
+                        external: externalValue,
+                        admin: adminValue
+                    },
+                    success: function (months) {
+//                    vals = months;
+//                    console.log(vals);
+                        console.log('Success Message: ' + months);
+//                    alert('the server returned ' + months);
+                        valsEncoded = jQuery.parseJSON(months);
+                        console.log(valsEncoded);
+                        Chart.defaults.global.legend = {
+                            enabled: false
+                        };
+                        var ctx = document.getElementById("monthChart");
+                        var monthChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: Object.keys(valsEncoded),
+                                datasets: [
+                                    {
+                                        label: '# of Visits',
+                                        backgroundColor: "#26B99A",
+                                        data: Object.values(valsEncoded)
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            fontColor:  'white'
+                                        }
+                                    }],
+                                    xAxes: [{
+                                        ticks: {
+                                            fontColor:  'white'
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+
+            daysVals = '{{ days|json_encode|raw }}';
+            var daysValsEncoded = jQuery.parseJSON(daysVals);
+            if (jQuery('#days').hasClass('active')){
+                dayChart.destroy();
+                console.log("DAYS ACTIVE");
+                jQuery.ajax({
+                    type: "POST",
+                    url: '/adminstatsday',
+                    data: {
+                        gender: genderValue,
+                        ageUpper: ageUpper,
+                        ageLower: ageLower,
+                        student: studentValue,
+                        staff: staffValue,
+                        alumni: alumniValue,
+                        faculty: facultyValue,
+                        external: externalValue,
+                        admin: adminValue
+                    },
+                    success: function (day) {
+//                    vals = months;
+//                    console.log(vals);
+                        console.log('Success Message: ' + day);
+//                    alert('the server returned ' + months);
+                        daysValsEncoded = jQuery.parseJSON(day);
+                        console.log(daysValsEncoded);
+                        Chart.defaults.global.legend = {
+                            enabled: false
+                        };
+                        var ctx = document.getElementById("dayChart");
+                        var dayChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: Object.keys(daysValsEncoded),
+                                datasets: [
+                                    {
+                                        label: '# of Visits',
+                                        backgroundColor: "#26B99A",
+                                        data: Object.values(daysValsEncoded)
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            fontColor:  'white'
+                                        }
+                                    }],
+                                    xAxes: [{
+                                        ticks: {
+                                            fontColor:  'white'
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            hoursVals = '{{ hours|json_encode|raw }}';
+            var hoursValsEncoded = jQuery.parseJSON(hoursVals);
+            if (jQuery('#hours').hasClass('active')){
+                hourChart.destroy();
+                console.log("HOURS ACTIVE");
+                jQuery.ajax({
+                    type: "POST",
+                    url: '/adminstatshour',
+                    data: {
+                        gender: genderValue,
+                        ageUpper: ageUpper,
+                        ageLower: ageLower,
+                        student: studentValue,
+                        staff: staffValue,
+                        alumni: alumniValue,
+                        faculty: facultyValue,
+                        external: externalValue,
+                        admin: adminValue
+                    },
+                    success: function (hour) {
+//                    vals = months;
+//                    console.log(vals);
+                        console.log('Success Message: ' + hour);
+//                    alert('the server returned ' + months);
+                        hoursValsEncoded = jQuery.parseJSON(hour);
+                        console.log(hoursValsEncoded);
+                        Chart.defaults.global.legend = {
+                            enabled: false
+                        };
+                        var ctx = document.getElementById("hourChart");
+                        var hourChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: Object.keys(hoursValsEncoded),
+                                datasets: [
+                                    {
+                                        label: '# of Visits',
+                                        backgroundColor: "#26B99A",
+                                        data: Object.values(hoursValsEncoded)
+                                    }
+                                ]
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            fontColor:  'white'
+                                        }
+                                    }],
+                                    xAxes: [{
+                                        ticks: {
+                                            fontColor:  'white'
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+
+        });
+
+
+
+    </script>
+
+
+
+
+{% endblock content %}
+
+{% block info %}
+{% endblock info %}
+
+
+
+

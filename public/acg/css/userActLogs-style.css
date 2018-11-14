@@ -1,0 +1,214 @@
+.sol-box-border {
+    padding: 0 15px;
+}
+.margin_bottom_30 {
+    margin-bottom: 30px;
+}
+.sol-table-td {
+    padding: 10px 20px !important;
+}
+form.sol-form {
+    float: left;
+    width: 73%;
+    border-left: 1px solid #ccc;
+    border-right:1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    border-top:1px solid #ccc;
+    background: #fff;
+}
+.sol-search-user-div {
+    margin-top:15px;
+    margin-bottom: 15px;
+    float: left;
+}
+.sol-search-user {
+    width: 275px !important;
+}
+.sol-search-div p.search-box {
+    float: left;
+}
+.sol-search-div {
+    width:100%;
+    float:left;
+    margin-bottom: 15px;
+}
+.sol-filter-btn {
+    position: relative;
+    top:2px;
+}
+.sol-col-width {
+    width:200px;
+}
+.sol-email-table {
+    width:100%;
+    float: left;
+    text-align: left;
+}
+.sol-email-table th {
+    width: 20%;
+    vertical-align: top;
+}
+.sol-email-table td {
+    width:80%;
+    padding-bottom: 30px;
+}
+.sol-email-table td input[type="email"] {
+ width: 40%;
+}
+.tab_parent li:nth-child(2),
+.tab_parent li:last-child {
+    margin-left: -3px;
+}
+.tab_parent_parent .tab_parent {
+    float: left;
+    margin-top: 20px;
+}
+.tab_parent li a.current {
+    position: relative;
+    bottom: -1px;
+    background: none repeat scroll 0 0 #fff !important;
+    padding-top: 12px;
+}
+.tab_parent_parent {
+    float: left;
+    margin-bottom: 0;
+    width: 100%;
+}
+.tab_parent {
+    float: right;
+}
+.tab_parent > ul {
+    margin: 0;
+}
+.tab_parent li {
+    display: inline-block;
+    font-size: 18px;
+    margin: 0;
+}
+.tab_parent ul li:first-child a {
+    border-left: 1px solid #cccccc;
+    border-radius: 5px 0 0;
+}
+.tab_parent ul li:last-child a{
+    border-radius: 0 5px 0 0;
+}
+.tab_parent a {
+    border-right: 1px solid #cccccc;
+    border-top: 1px solid #cccccc;
+    color: #484848;
+    display: block;
+    padding: 11px 19px;
+    text-decoration: none;
+    position: relative;
+    z-index: 1;
+    background: none repeat scroll 0 0 #f1f1f1 !important;
+}
+.tab_parent a:hover {
+    color: #484848;
+}
+.sol-dropdown {
+    margin-bottom: 15px;
+}
+h3.sol-header-text {
+    font-size: 19px;
+    font-weight: 600;
+}
+.sol-display-roles {
+    width: 50%;
+}
+.user-activity-ad-block {
+    float: right;    
+    width: 25%;
+}
+.ual-help {
+    background: none repeat scroll 0 0 #fff;
+    border: 2px solid #008000;
+    border-radius: 3px;
+    padding: 10px;
+}
+.ual-total-download {
+    margin-top: 50px;
+}
+.ual-support,
+.useful_plugins {
+    background: none repeat scroll 0 0 #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    margin-top: 30px;
+    padding: 10px;
+}
+.ual-total-download .star-rating {
+    display: inline-block;
+    float: right;
+}
+.sol-form .widefat.post.fixed.striped th.check-column{
+    padding-bottom: 0;
+    vertical-align: middle;
+    padding-left: 0;
+}
+.wrap .frm-user-activity .tablenav .displaying-num {
+    float: left;
+    padding: 8px 0;
+}
+ul.plugins_list .plugin_img img {
+ width: 100%;
+}
+ul.plugins_list span {
+ display: block;
+}
+ul.plugins_list span a {
+ font-size: 18px;
+}
+.role-width{
+    width: 95px;
+}
+.email-id-width{
+    width: 215px;
+    word-wrap: break-word !important;
+}
+.download-number, .useful_plugins a{
+    font-size: 16px;
+}
+
+.subscribe_widget
+{
+    margin: 10px;
+}
+.sub_row {
+    margin: 10px 0;
+    line-height: 1.7;
+}
+.sub_row label {
+    display: inline-block;
+    min-width: 100px;
+}
+.success_msg {
+    color: green;
+}
+.sub_row > input {
+    height: 37px;
+    width: 327px;
+}
+.sub_row > input {
+    height: 37px;
+    width: 310px;
+}
+.subscribe_widget .button.button-primary {
+    font-size: 16px;
+    height: 40px;
+    width: 240px;
+}
+.subscribe_widget .button.button-delete {
+    font-size: 16px;
+    height: 40px;
+    width: 167px;
+}
+.sub_row .sub_checkbox {
+    width:15px;
+    height: auto;
+    margin: 0 6px 0 0;
+}
+.sub_row_checkbox
+{
+    margin: 15px 0;
+}

@@ -1,0 +1,391 @@
+{% extends "master.twig" %}
+
+
+{% block head %}
+    <!-- Bootstrap -->
+    {#<link href="css/bootstrap.css" rel="stylesheet">#}
+    <!-- Font Awesome -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="css/green.css" rel="stylesheet">
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .split {
+            display: inline-block;
+        }
+    </style>
+
+    <script src="js/bootstrap.js"></script>
+
+{% endblock head %}
+
+    {% block title %} Profile{% endblock title %}
+
+
+{% block content %}
+
+    <div>
+        <img src="images/{{ session.user.picture }}" style="width: 5%; height: 10%;" alt="">
+        <p style="font-weight: bold; font-size: large; padding: 0;">Name: {{ session.user.name }}</p>
+        <p style="font-weight: bold; font-size: large; padding: 0;">ID: {{ session.user.id }}</p>
+
+    </div>
+
+    <div id="fullcalendar" style="width: 50%; display: inline-block;"></div>
+
+    {% set classExample = classes|first %}
+    <div class="clearfix" style="width: 40%; display: inline-block;"></div>
+    <div class="row">
+        <div class="x_panel2">
+            <div class="x_title">
+                <h2 style="width: auto; margin-right: 3%; color: #fff!important">Classes</h2>
+
+                {#
+                TODO: Search for classes to register for
+                #}
+                <form style="margin: 0; border-left: 1px solid #5F656A;" role="search" method="get" class="search-form" action="/registersearchclasses">
+                    <label style="display: inline-block;">
+                        <span class="screen-reader-text">Search for:</span>
+                        <input style="margin: 0;" type="search" class="search-field" placeholder="Search …" value="" name="keyword">
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+
+                <div class="clearfix"></div>
+            </div>
+            <div>
+                <!-- start project list -->
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+
+                        <th>#</th>
+                        <th>Class Name</th>
+
+                        <th>Sample of Friends Registered </th>
+                        <th>Class Capacity so Far</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {#
+                     create a row for each class with its info
+                     #}
+                    {% for class in classes %}
+                        <tr style="padding: 0;">
+                            <td colspan="4" style="border: none; padding: 0;">
+                                <div class="x_panel" style="padding: 0;">
+                                    <div class="x_title" style="padding: 4px; border-bottom: none;">
+                                        {#
+                                        number of class in the list
+                                        #}
+                                        <div class="split" style="width: 5%; margin: 0;">
+                                            {{ loop.index }}
+                                        </div>
+
+                                        <div class="split" style="width: 25%; margin: 0;">
+                                            <p style="padding: 0;">{{ class.className|capitalize }}</p>
+                                            <small>Instructor: {{ class.instructorName|capitalize }}
+                                            </small>
+                                        </div>
+
+                                        {#
+                                        TODO: Sample of users/friends registered for the class
+                                        #}
+                                        <div class="split" style="width: 25%; margin: 0;">
+                                            <ul class="list-inline">
+                                                {% for friend in class.registeredFriends %}
+                                                    <li>
+                                                        <img title="{{ friend.name|title }}" src="images/{{ friend.picture }}" class="avatar" alt="Avatar">
+                                                    </li>
+                                                {% endfor %}
+
+                                                <li>
+                                            </ul>
+                                        </div>
+                                        {#
+                                        display how many poeple are registered so far
+                                        #}
+                                        <div class="split" style="width: 25%; margin: 0;">
+                                            <div class="project_progress">
+                                                <div class="progress progress_sm">
+                                                    <div class="progress-bar bg-green" role="progressbar" data-transitiongoal="{{ class.currentCapacityPercentage }}"></div>
+                                                </div>
+                                                <small>
+                                                    {{ class.currentCapacityPercentage }}% Complete
+                                                </small>
+                                            </div>
+                                        </div>
+
+                                        <ul class="nav navbar-right panel_toolbox">
+                                            {#
+                                            Display more info for user about the class.
+                                            it is displaye if he clicks on it.
+                                            #}
+                                            <li>
+                                                <a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                            </li>
+                                            {#
+                                            if user is registered display a check so knows he is registered to it.
+                                            id he clicks on it he unregisters
+                                            #}
+                                            {% if class in userClasses %}
+                                                <li>
+                                                    <i class=" dropdown-toggle unregisterClass fa fa-check-circle" data-toggle="dropdown" role="button" aria-expanded="false" value="{{ class.classID }}"></i>
+                                                </li>
+                                                {#
+                                                if user is not registered display a plus so knows he is not registered to it.
+                                                id he clicks on it he registers
+                                                #}
+                                                {% else %}
+
+                                                    <li>
+                                                        <i class="dropdown-toggle
+                                                        {% if class.currentCapacityPercentage != 100 %}
+                                                            {{ "registerClass" }}
+                                                            {% else %}
+                                                            {{ "full" }}
+                                                        {% endif %}
+
+                                                        fa fa-plus" data-toggle="dropdown" role="button" aria-expanded="false" value="{{ class.classID }}"></i>
+                                                    </li>
+
+                                            {% endif %}
+                                        </ul>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                    {#
+                                    Display more info for user about the class.
+                                    it is displaye if he clicks on the expand button.
+                                    #}
+                                    <div class="x_content update" style="padding: 0; display: none;">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>Instructor</th>
+                                                <th>Start Time/24:00</th>
+                                                <th>End Time/24:00</th>
+                                                <th>Max. Capacity</th>
+                                                <th>Current Capacity</th>
+                                                <th>Location</th>
+                                                <th>Days</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+
+                                                <td>
+                                                    {{ class.instructorName|capitalize }}
+                                                </td>
+                                                <td>{{ class.startTime }}</td>
+                                                <td>{{ class.endTime }}</td>
+                                                <td>{{ class.capacity }}</td>
+                                                <td>{{ class.currentCapacity }}</td>
+                                                <td>{{ class.location }}</td>
+                                                <td>
+                                                    <ul>
+                                                        {% for key, value in class.days %}
+                                                            {% if value == 1 %}
+                                                                <li>{{ key|capitalize }}</li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                </td>
+
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- end project list -->
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        jQuery(document).ready(function() {
+            jQuery('.collapse-link').click(function() {
+                toggle(this);
+            });
+            jQuery('.close-link').click(function () {
+                var $BOX_PANEL = jQuery(this).closest('.x_panel');
+            });
+        });
+        jQuery('.addClass').toggle();
+        jQuery('.add').click(function() {
+            jQuery('.addClass').toggle();
+        });
+        jQuery('.edit').click(function() {
+            toggleOnce(this);
+            jQuery(this).toggleClass('fa-chevron-down');
+            jQuery(this).find('i').toggleClass('fa-chevron-up');
+            jQuery('.updateInfo').toggle();
+        });
+        jQuery('.unregisterClass').click(function() {
+
+
+            if (confirm("Are you sure you want to unregister for this class?")) {
+
+
+//                jQuery(this).closest('.x_panel').remove();
+                console.log(jQuery(this).attr('value'));
+                console.log({{ session.user.id }});
+                var $icon = jQuery(this);
+
+                jQuery.ajax(
+                        {
+                            type: 'POST',
+                            url: '/unregisterclass',
+                            data: {
+                                classID: jQuery(this).attr('value'),
+                                userID: {{ session.user.id }}
+                            },
+                            success: function (msg) {
+
+                                console.log(msg);
+                                confirm(JSON.parse(msg)['msg']);
+
+                            }
+                        }
+                );
+                $icon.toggleClass('unregisterClass');
+                $icon.toggleClass('registerClass');
+                console.log($icon);
+                $icon.find('i').toggleClass('fa-check-circle');
+                $icon.find('i').toggleClass(' fa-plus');
+                location.reload();
+            }
+        });
+
+        jQuery('.registerClass').click(function() {
+//                jQuery(this).closest('.x_panel').remove();
+                console.log(jQuery(this).attr('value'));
+            console.log({{ session.user.id }});
+            var $icon = jQuery(this);
+                jQuery.ajax(
+                        {
+                            type: 'POST',
+                            url: '/registerclass',
+                            data: {
+                                classID: jQuery(this).attr('value'),
+                                userID: {{ session.user.id }}
+                            },
+                            success: function (msg) {
+                                console.log(msg);
+                                alert(JSON.parse(msg))
+                            }
+                        }
+                );
+            $icon.toggleClass('registerClass');
+            $icon.toggleClass('unregisterClass');
+            console.log($icon);
+            $icon.find('i').toggleClass(' fa-plus');
+            $icon.find('i').toggleClass('fa-check-circle');
+            location.reload();
+        });
+
+        function toggle($this) {
+
+            var $BOX_PANEL = jQuery($this).closest('.x_panel'),
+                    $ICON = jQuery($this).find('i'),
+                    $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+//            console.log($ICON);
+            if ($BOX_PANEL.attr('style')) {
+                $BOX_CONTENT.slideToggle(200, function(){
+                    $BOX_PANEL.removeAttr('style');
+
+                    $ICON.toggleClass('fa-chevron-down');
+                    $ICON.addClass('fa-chevron-up');
+                });
+            } else {
+                $BOX_CONTENT.slideToggle(200);
+                $BOX_PANEL.css('height', 'auto');
+                $ICON.toggleClass('fa-chevron-up');
+                $ICON.addClass('fa-chevron-down');
+            }
+
+            jQuery('.x_title').css('border-bottom', '2px solid');
+
+        }
+
+        function toggleOnce($this) {
+
+            var $BOX_PANEL = jQuery($this).closest('.x_panel'),
+//                    $ICON = jQuery($this).parent().parent().parent().first().find('i'),
+                    $ICON = jQuery($this).closest('.collapse-link'),
+                    $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+            if ($BOX_PANEL.attr('style')) {
+                $BOX_CONTENT.slideToggle(200, function(){
+                    $BOX_PANEL.removeAttr('style');
+
+
+                    console.log($ICON);
+                    $ICON.toggleClass('fa-chevron-down');
+                    console.log($ICON);
+                    $ICON.addClass('fa-chevron-up');
+                    console.log($ICON);
+                });
+            }
+
+            $ICON.toggleClass('fa-chevron-down');
+            $ICON.toggleClass('fa-chevron-up');
+
+        }
+
+        function toggleUpdate($this) {
+
+            var $B = jQuery($this).closest('.x_content').closest('.x_content');
+            console.log($B);
+
+        }
+
+
+    </script>
+
+    <script>
+        jQuery('.full').click(function() {
+            alert("The Class is Full! You cannot register.");
+
+        });
+
+    </script>
+    <!-- jQuery -->
+    {#<script src="js/jquery.min.js"></script>#}
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    {#<script>jQuery.noConflict();</script>#}
+    <script src="js/bootstrap-progressbar.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    {#<script>jQuery.noConflict();</script>#}
+    <script src="js/custom.min.js"></script>
+{% endblock content %}
+
+
+
+

@@ -1,0 +1,307 @@
+{% extends "master.twig" %}
+
+
+{% block head %}
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    {#<link href="css/font-awesome.min.css" rel="stylesheet">#}
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+
+    {#<script type="text/javascript" src="//code.jquery.com/jquery-1.8.3.js"></script>#}
+    <script type="text/javascript" src="js/fullcalendar/jquery-1.8.3.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+    <script type="text/javascript" src="js/fullcalendar/jquery.qtip.js"></script>
+    {#<script type="text/javascript" src="//qtip2.com/v/stable/jquery.qtip.js"></script>#}
+
+    <link rel="stylesheet" type="text/css" href="js/fullcalendar/jquery.qtip.css">
+    {#<link rel="stylesheet" type="text/css" href="//qtip2.com/v/stable/jquery.qtip.css">#}
+
+    <link rel="stylesheet" type="text/css" href="js/fullcalendar/jquery.fullcalendar.css">
+    {#<link rel="stylesheet" type="text/css" href="//qtip2.com/static/stylesheets/libs/jquery.fullcalendar.css">#}
+
+    <script type="text/javascript" src="js/fullcalendar/jquery.fullcalendar.min.js"></script>
+    {#<script type="text/javascript" src="//qtip2.com/static/javascripts/libs/jquery.fullcalendar.min.js"></script>#}
+
+    <script type="text/javascript" src="js/fullcalendar/jquery-ui.min.js"></script>
+    {#<script type="text/javascript" src="//code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>#}
+
+    <script type="text/javascript">//<![CDATA[
+        $(window).load(function(){
+// Setup FullCalendar
+            (function() {
+                var date = new Date();
+                var d = date.getDate();
+                var m = date.getMonth();
+                var y = date.getFullYear();
+
+                var tooltip = $('<div/>').qtip({
+                    id: 'fullcalendar',
+                    prerender: true,
+                    content: {
+                        text: ' ',
+                        title: {
+                            button: true
+                        }
+                    },
+                    position: {
+                        my: 'bottom center',
+                        at: 'top center',
+                        target: 'mouse',
+                        viewport: $('#fullcalendar'),
+                        adjust: {
+                            mouse: false,
+                            scroll: false
+                        }
+                    },
+                    show: false,
+                    hide: false,
+                    style: 'qtip-light'
+                }).qtip('api');
+
+                $('#fullcalendar').fullCalendar({
+//                    editable: true,
+                    height: 600,
+//                    width: 100,
+                    buttons: false,
+                    header: false
+//                    {
+//                        left: 'title',
+//                        center: '',
+//                        right: 'today prev,next'
+//                    }
+                    ,
+                    minTime: "07:00:00",
+                    maxTime: "21:00:00",
+
+                    eventClick: function(data, event, view) {
+                        var content = '<h3>'+data.title+'       </h3>' +
+                                '<p><b>Start:</b> '+data.time+'<br />' +
+                                '<p><b>Duration:</b> '+data.duration+' Min<br /></p>'+
+                                '<p><b>Location:</b> '+data.location+'<br /></p>';
+
+                        tooltip.set({
+                            'content.text': content
+                        })
+                                .reposition(event).show(event);
+                    },
+                    dayClick: function() { tooltip.hide() },
+                    eventResizeStart: function() { tooltip.hide() },
+                    eventDragStart: function() { tooltip.hide() },
+                    viewDisplay: function() { tooltip.hide() },
+                });
+
+                {% for class in classes %}
+
+                {% for key, value in class.days %}
+
+                $('#fullcalendar').fullCalendar( 'addEventSource',
+                        function(start, end, callback) {
+                            // When requested, dynamically generate a
+                            // repeatable event for every monday.
+                            var events = [];
+//                            var monday = 1;
+                            var one_day = (24 * 60 * 60 * 1000);
+
+                            for (loop = start.getTime();
+                                 loop <= end.getTime();
+                                 loop = loop + one_day) {
+
+                                var column_date = new Date(loop);
+
+                                if (column_date.getDay() == {{ value }}) {
+                                    // we're in Monday, create the event
+                                    var time = "{{ class.startTime }}";
+                                    var parseTime = time.split(":");
+                                    console.log(parseTime[0]);
+                                    events.push({
+                                        title: '{{ class.name }}',
+                                        start: new Date(column_date.setHours(parseTime[0], parseTime[1])),
+                                        end: new Date(column_date.setMinutes({{ class.duration }})),
+//                                        end: new Date(column_date.setMinutes(90)),
+                                        allDay: false,
+                                        location: "{{ class.location }}",
+                                        time: "{{ class.startTime }}",
+                                        duration: "{{ class.duration }}"
+                                    });
+                                }
+
+
+
+
+                            } // for loop
+
+                            // return events generated
+                            callback( events );
+                        }
+                );
+                {#{% endif %}#}
+
+                {% endfor %}
+
+                {% endfor %}
+//                $('#fullcalendar').fullCalendar( 'addEventSource',
+//                        function(start, end, callback) {
+//                            // When requested, dynamically generate a
+//                            // repeatable event for every monday.
+//                            var events = [];
+//                            var monday = 1;
+//                            var one_day = (24 * 60 * 60 * 1000);
+//
+//                            for (loop = start.getTime();
+//                                 loop <= end.getTime();
+//                                 loop = loop + one_day) {
+//
+//                                var column_date = new Date(loop);
+//
+//                                if (column_date.getDay() == monday) {
+//                                    // we're in Moday, create the event
+//                                    events.push({
+//                                        title: 'Morning Meeting',
+//                                        start: new Date(column_date.setHours(10, 00)),
+//                                        end: new Date(column_date.setHours(10, 40)),
+//                                        allDay: false
+//                                    });
+//                                }
+//
+//
+//
+//
+//                            } // for loop
+//
+//                            // return events generated
+//                            callback( events );
+//                        }
+//                );
+                $('#fullcalendar').fullCalendar('changeView', 'agendaWeek');
+//                $('#calendar').fullCalendar('option', 'aspectRatio', 0.5);
+
+            }());
+        });//]]>
+
+
+
+
+    </script>
+
+{% endblock head %}
+
+    {% block title %} {{ user.name }}'s Profile{% endblock title %}
+
+
+{% block content %}
+
+    <div>
+        {#<img src="http://placehold.it/300x300" alt="">#}
+        <img src="images/{{ user.picture }}" style="width: 15%; height: 20%;" alt="">
+        <p style="font-weight: bold; font-size: large; padding: 0;">Name: {{ user.name }}</p>
+        <p style="font-weight: bold; font-size: large; padding: 0;">ID: {{ user.id }}</p>
+
+    </div>
+
+    <div style="width: 50%; height: 50%;">
+        <canvas id="mybarChart">
+
+        </canvas>
+    </div>
+
+
+    <div id="fullcalendar"></div>
+
+    <!-- jQuery -->
+    {#<script src="js/jquery.min.js"></script>#}
+    <script src="js/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="js/Chart.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="js/custom.min.js"></script>
+
+
+    <script>
+        Chart.defaults.global.legend = {
+            enabled: false
+        };
+
+        var ctx = document.getElementById("mybarChart");
+        var mybarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    {% for key,value in vals %}
+//                        "January", "February", "March", "April", "May", "June", "July"
+                    {% if loop.last %}
+                    "{{ key }}"
+                    {% else %}
+                    "{{ key }}",
+                    {% endif %}
+
+                    {% endfor %}
+                ],
+
+                {#{% for key,value in vals %}#}
+                {##}
+                {#{% endfor %}#}
+
+                datasets: [{
+                    label: '# of Visits',
+                    backgroundColor: "#26B99A",
+                    data: [
+//                            51, 30, 40, 28, 92, 50, 45
+                        {% for key,value in vals %}
+//                        "January", "February", "March", "April", "May", "June", "July"
+                        {% if loop.last %}
+                        {{ value }}
+                        {% else %}
+                        {{ value }},
+                        {% endif %}
+
+                        {% endfor %}
+                    ]
+                }
+//                , {
+//                    label: '# of Votes',
+//                    backgroundColor: "#03586A",
+//                    data: [41, 56, 25, 48, 72, 34, 12]
+//                }
+
+                ]
+            },
+
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+
+
+
+{% endblock content %}
+
+{% block info %}
+    {#{{ include('info.twig') }}#}
+{% endblock info %}
+
+
+
+

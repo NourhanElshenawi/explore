@@ -1,0 +1,232 @@
+{% extends "master.twig" %}
+
+{% block head %}
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="css/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .split {
+            display: inline-block;
+            /*width: 10%;*/
+            margin: 0;
+        }
+
+        th {
+            /*width: 15%;*/
+            padding: 0;
+        }
+
+        p {
+            font-weight: bold;
+            font-size: large;
+        }
+
+
+
+    </style>
+
+    <script src="js/bootstrap.js"></script>
+
+{% endblock head %}
+
+{% block title %} Edit Users {% endblock title %}
+
+{% block content %}
+
+    {% set classExample = classes|first %}
+
+    {%  set admin = "Admin" %}
+    {% set notAdmin = "Regular User" %}
+
+    {#{{ dump(users.1.registrations) }}#}
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+        {#<div class="col-md-12">#}
+        <div class="x_panel2">
+            <div class="x_title">
+                <h2 style="width: auto; margin-right: 3%;">Gym Users</h2>
+
+                <form style="margin: 0; border-left: 1px solid #5F656A;" role="search" method="get" class="search-form" action="/manualLog">
+                    <label style="display: inline-block;">
+                        <span class="screen-reader-text">Search for:</span>
+                        <input style="margin: 0;" type="search" class="search-field" placeholder="Search …" value="" name="keyword">
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+
+                <div class="clearfix"></div>
+            </div>
+            <div>
+
+                <!-- start project list -->
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Classification</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+
+
+                    {% for user in users %}
+                        <tr style="padding: 0;">
+
+                            <td colspan="5" style="border: none; padding: 0;">
+
+                                <div class="x_panel" style="padding: 0;">
+
+                                    <div class="x_title" style="padding: 4px; border-bottom: none;">
+
+                                        <div class="split" style="width: 7%">
+                                            {{ loop.index }}
+                                        </div>
+
+                                        <div class="split" style="width: 20%">
+                                            <p>{{ user.name|capitalize }}</p>
+
+                                        </div>
+
+                                        <div class="split" style="width: 21%">
+                                            <p>{{ user.email }}</p>
+                                        </div>
+
+                                        <div class="split" style="width: 15%; vertical-align: middle;">
+                                            {% if user.admin == 1 %}
+                                                <p style="padding: 0; font-size: medium;">{{ "Administrator" }}</p>
+                                            {% endif %}
+                                            {% if user.student == 1  %}
+                                                <p style="padding: 0; font-size: medium;">{{ "Student" }}</p>
+                                            {% endif %}
+                                            {% if user.faculty == 1  %}
+                                                <p style="padding: 0; font-size: medium;">{{ "Faculty" }}</p>
+                                            {% endif %}
+                                            {% if user.staff == 1  %}
+                                                <p style="padding: 0; font-size: medium;">{{ "Staff" }}</p>
+                                            {% endif %}
+                                            {% if user.alumni == 1  %}
+                                                <p style="padding: 0; font-size: medium;">{{ "Alumni" }}</p>
+                                            {% endif %}
+                                            {% if user.external == 1  %}
+                                                <p style="padding: 0; font-size: medium;">{{ "External Paying" }}</p>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="split">
+
+                                            <button id="{{ user.id }}" class="{% if user.inGym == true %}
+                                                {{ "Logout" }} {% else %} {{ "Login" }} {% endif %}">
+                                                {% if user.inGym == true %}
+                                                    {{ "Logout" }} {% else %} {{ "Login" }} {% endif %}
+                                            </button>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <!-- end project list -->
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+    <script>
+            jQuery('.Logout').click(function() {
+                var $id = jQuery(this).attr('id');
+                console.log($id);
+
+                jQuery.ajax(
+                        {
+                            type: 'POST',
+                            url: '/manualSignout',
+                            data: {
+                                id: $id
+                            },
+                            success: function (msg) {
+                                console.log(msg);
+                                var $msg = jQuery.parseJSON(msg);
+                                alert($msg['msg']);
+                                if ($msg['success']){
+                                    location.reload();
+                                }
+                            }
+                        }
+                );
+            });
+            jQuery('.Login').click(function() {
+                var $element = jQuery(this);
+                var $id = jQuery(this).attr('id');
+                console.log($id);
+
+                jQuery.ajax(
+                        {
+                            type: 'POST',
+                            url: '/manualSignin',
+                            data: {
+                                id: $id
+                            },
+                            success: function (msg) {
+                                console.log(msg);
+                                var $msg = jQuery.parseJSON(msg);
+                                alert($msg['msg']);
+                                if ($msg['success']){
+                                    location.reload();
+                                }
+                            }
+                        }
+                );
+            });
+
+        });
+    </script>
+    <!-- jQuery -->
+    {#<script src="js/jquery.min.js"></script>#}
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/bootstrap-progressbar.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/custom.min.js"></script>
+
+{% endblock content %}
+
+{% block info %}
+{% endblock info %}
+

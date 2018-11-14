@@ -1,0 +1,152 @@
+{% extends "../index.twig" %}
+
+
+{% block body %}
+
+    <form action="" method="post" enctype="multipart/form-data">
+
+    <div id="banner_image">
+        <div id="slider-wrapper">
+            <div id="slider" class="nivoSlider">
+                {% for image in carouselImages %}
+                    <img src="images/{{ image.name }}" alt="" />
+                {% endfor %}
+            </div><!--close slider-->
+        </div><!--close slider_wrapper-->
+    </div><!--close banner_image-->
+
+    <div class="content_container" style="width: 100%">
+        <p class="title">Include in Carousel</p>
+                <ul id="sortable1" class="sortable connectedSortable">
+                {% for image in carouselImages %}
+                   <li>
+                       <img src="images/{{ image.name }}" alt="" style="width: 100%; height: 100%;" id="{{ image.id }}"/>
+                       {#<input type='hidden' name='vegi[]' value='{{ image.id }}'/>#}
+                   </li>
+                {% endfor %}
+                </ul>
+    </div>
+
+    <div class="content_container" style="width: 100%">
+        <p class="title">Remove from the Carousel</p>
+        <ul id="sortable2" class="sortable connectedSortable">
+            {% for image in notIncludedCarouselImages %}
+                <li>
+                    <img src="images/{{ image.name }}" alt="" style="width: 100%; height: 100%;" id="{{ image.id }}"/>
+                    {#<input type='hidden' name='fruits[]' value='{{ image.id }}'/>#}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+        <div class="content_container" style="width: 100%">
+            <p class="title">Delete from Database</p>
+            <ul id="sortable3" class="sortable connectedSortable">
+
+            </ul>
+        </div>
+
+
+
+        <input type='hidden' name='included' id='included' value=''/>
+
+        <input type="submit" value="Update Carousel" id="go" name="go">
+    </form>
+
+    <div class="content_container" id="write">
+              <p>!!!!</p>
+    </div>
+
+    <div id="test">
+        <p id="123">HELLOOO
+        <p>DD</p>
+        </p>
+    </div>
+
+
+
+    <script>
+
+        var included = [];
+        var notIncluded = [];
+        var removePictures = [];
+        var position = 1;
+        console.log(included);
+
+        $( "#go" ).click(function() {
+            //a task for whenn the button is clicked
+
+            $( "#sortable1" ).children().children().each(function( index ) {
+                console.log( index + " I : " + $( this).attr("id") )
+                //get the id attribute of each image in the li in the sortable1 list
+                included.push($( this).attr("id"));
+                // add the id of the image to the array that contains the ids of the images to be included in the carousel
+                console.log("POSITION: " + position);
+
+//                $("#included").html($( this).attr("id"));
+                //this is the jquery code to execute php code to update the database with the changes to be made to the carousel
+                $.ajax({
+                    type: "GET",
+                    url: 'test',
+                    //this is the data to be sent in the GET request. it includes the id -> included and the position -> position
+                    data: {
+                        key1: included,
+                        position: position
+                    },
+                    //a success message that appears when the jqeury is successful
+                    success: function(msg){
+                        console.log('WOW' + msg);
+                    }
+                })
+                //to increase by one for the next image's position
+                position++;
+                console.log("POSITION: " + position);
+            });
+
+             // this is the jquery code to collect all the images that are to not be included in the carousel but remain in the database
+            $( "#sortable2" ).children().children().each(function( index ) {
+                console.log( index + " NI : " + $( this).attr("id") );
+                //get the id attribute of each image in the li in the sortable2 list
+                notIncluded.push($( this).attr("id"));
+                // add the id of the image to the array that contains the ids of the images to not be included in the carousel
+
+                //this is the jquery code to execute php code to update the database with the changes to be made to the carousel
+                $.ajax({
+                    type: "GET",
+                    url: 'remove',
+                    data: {
+                        key1: notIncluded
+                        //this is the data to be sent in the GET request. it includes the id -> included and no position is specified because it will not be in the carousel
+                    },
+                    //a success message that appears when the jqeury is successful
+                    success: function(msg){
+                        console.log('WOW' + msg);
+                    }
+                })
+            });
+
+            $( "#sortable3" ).children().children().each(function( index ) {
+                console.log( index + " DELETE : " + $( this).attr("id") );
+                removePictures.push($( this).attr("id"));
+
+                $.ajax({
+                    type: "GET",
+                    url: 'delete',
+                    data: {
+                        key1: removePictures
+                    },
+                    success: function(msg){
+                        console.log('WOW' + msg);
+                    }
+                })
+            });
+
+            console.log(included);
+        });
+
+
+
+
+    </script>
+
+{% endblock body %}

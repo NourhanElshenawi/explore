@@ -1,0 +1,201 @@
+
+<header id="masthead" class="site-header" role="banner" style="background-image: url(); ">
+    <nav class="secondary-navigation" role="navigation" aria-label="Secondary Navigation" style="margin-top: 25px; margin-right: 10px;">
+        <div class="menu-top-menu-container">
+            <ul id="menu-top-menu" class="menu">
+
+                <li id="menu-item-291" class="top-general menu-item menu-item-type-post_type menu-item-object-page current-menu-item page_item page-item-6 current_page_item menu-item-291">
+                    <i class="fa fa-home" style="margin-right: 4px;"></i>
+                    <a href="/">home</a>
+                </li>
+                <li id="menu-item-15534" class="top-general menu-item menu-item-type-custom menu-item-object-custom menu-item-15534"><i class="fa fa-list-alt" style="margin-right: 4px;"></i>
+                    <a href="/fitnessProgram">Fitness Program</a>
+                </li>
+                {% if session.user is defined %}
+                    <li id="menu-item-15534"
+                        class="top-general menu-item menu-item-type-custom menu-item-object-custom menu-item-15534">
+                        <i class="fa fa-plus-square" style="margin-right: 4px;"></i>
+                        <a href="/register">Register Class</a>
+                    </li>
+                    <li id="menu-item-15534"
+                        class="top-general menu-item menu-item-type-custom menu-item-object-custom menu-item-15534">
+                        <i class="fa fa-plus-square" style="margin-right: 4px;"></i>
+                        <a href="/requestProgram">Request Program</a>
+                    </li>
+                    <li id="menu-item-600" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-600"><a href="/logout">Logout</a>
+                        <i class="fa fa-sign-out"></i>
+                    </li>
+                {% else %}
+                    <li id="menu-item-600" class=" menu-item menu-item-type-post_type menu-item-object-page menu-item-600"><a href="/login" style="display: inline-block;">Log-in</a>
+                        <i class="fa fa-sign-in"></i>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <div class="col-full" style="margin: 0;">
+
+        <a class="skip-link screen-reader-text" href="#site-navigation">Skip to navigation</a>
+        <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+        <a href="http://www.acg.edu/" class="custom-logo-link" rel="home" itemprop="url"><img width="245" height="110" src="http://www.acg.edu/wp-content/uploads/2016/05/logo.png" class="custom-logo" alt="logo" itemprop="logo"></a>
+        {% if session.user is defined %}
+        <!-- #site-navigation -->
+            <div class="headerright">
+            <div>
+                <div class="menu-top-virtual-quick-n-more-container">
+                </div>
+            </div>
+        </div>
+
+        </div>
+
+        <div class="col-full">
+
+            <section class="storefront-primary-navigation">		<nav id="site-navigation" class="main-navigation" role="navigation" aria-label="Primary Navigation">
+                    <button class="menu-toggle" aria-controls="primary-navigation" aria-expanded="false"><span>Menu</span></button>
+
+                    <div class="primary-navigation">
+                        <ul id="menu-main-menu" class="menu nav-menu" aria-expanded="false">
+                            {% if session.user.admin == 1 %}
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Gym Statistics</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36"><a href="/adminvisitstats">Visitation</a>
+                                    </li>
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a href="/adminstatsuser">User Characteristics</a>
+                                    </li>
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a href="/adminclassstats">Class Registrations</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Gym Logs</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/logs">User Logs</a>
+                                    </li>
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                        <a href="/realtimelogs">Real-Time Logs</a>
+                                    </li>
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                        <a href="/manualLog">Manual Log User</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Users</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/editusers">Edit Users</a>
+                                    </li>
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/logs">View Statistics</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Classes</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/editschedule">Edit Classes</a>
+                                    </li>
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/registrations">Registrations</a>
+                                    </li>
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/fitnessProgram">View Fitness Program</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Instructors</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/editInstructors">Edit Instructors</a>
+                                    </li>
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/logs">View Statistics</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% elseif session.user.admin == 0 %}
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Workout Programs</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36"><a href="/currentProgramRequest">Current Program</a>
+                                    </li>
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35"><a href="/workoutProgramHistory">History</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Friends</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                        <a href="/friendsRealTime">Friends at The Gym Now!</a>
+                                    </li>
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                        <a href="/myfriends">My Friends</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Gym Logs</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                        <a href="/friendsRealTime">Friends at The Gym Now!</a>
+                                    </li>
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                        <a href="/realtimelogs">Real-Time Logs</a>
+                                    </li>
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/mylogs">History Logs</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Gym Statistics</a>
+                                <ul class="sub-menu">
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                        <a href="/generalStats">General Visitations</a>
+                                    </li>
+                                    <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                        <a href="/personalStats">Personal Visitations</a>
+                                    </li>
+                                    <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                        <a href="/mylogs">History Logs</a>
+                                    </li>
+                                </ul>
+                            </li>
+                                {% if session.user.nurse == 1 %}
+                                    <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Certificates</a>
+                                        <ul class="sub-menu">
+                                            <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                                <a href="/nurse-pending">Pending</a>
+                                            </li>
+                                            <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                                <a href="/nurse-approved">Approved</a>
+                                            </li>
+                                            <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                                <a href="/nurse-rejected">Rejected</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    {% endif %}
+
+                            {% if session.user.instructorID is defined %}
+                                <li id="menu-item-25" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-25"><a>Programs Requests</a>
+                                    <ul class="sub-menu">
+                                        <li id="menu-item-36" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-36">
+                                            <a href="/programRequests">Pending</a>
+                                        </li>
+                                        <li id="menu-item-35" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-35">
+                                            <a href="/finalizedRequests">Finalized</a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            {% endif %}
+                    {% endif %}
+
+
+                        </ul>
+                    </div>
+                </nav><!-- #site-navigation -->
+            </section>
+    </div>
+    {% endif %}
+</header><!-- #masthead -->

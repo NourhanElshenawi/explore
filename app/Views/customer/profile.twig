@@ -1,0 +1,260 @@
+{% extends "master.twig" %}
+
+
+{% block head %}
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    {#<link href="css/font-awesome.min.css" rel="stylesheet">#}
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+
+    {#<script type="text/javascript" src="//code.jquery.com/jquery-1.8.3.js"></script>#}
+    <script type="text/javascript" src="js/fullcalendar/jquery-1.8.3.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+
+    <script type="text/javascript" src="js/fullcalendar/jquery.qtip.js"></script>
+    {#<script type="text/javascript" src="//qtip2.com/v/stable/jquery.qtip.js"></script>#}
+
+    <link rel="stylesheet" type="text/css" href="js/fullcalendar/jquery.qtip.css">
+    {#<link rel="stylesheet" type="text/css" href="//qtip2.com/v/stable/jquery.qtip.css">#}
+
+    <link rel="stylesheet" type="text/css" href="js/fullcalendar/jquery.fullcalendar.css">
+    {#<link rel="stylesheet" type="text/css" href="//qtip2.com/static/stylesheets/libs/jquery.fullcalendar.css">#}
+
+    <script type="text/javascript" src="js/fullcalendar/jquery.fullcalendar.min.js"></script>
+    {#<script type="text/javascript" src="//qtip2.com/static/javascripts/libs/jquery.fullcalendar.min.js"></script>#}
+
+    <script type="text/javascript" src="js/fullcalendar/jquery-ui.min.js"></script>
+    {#<script type="text/javascript" src="//code.jquery.com/ui/1.10.2/jquery-ui.min.js"></script>#}
+
+    <script type="text/javascript">//<![CDATA[
+        $(window).load(function(){
+// Setup FullCalendar
+            (function() {
+                var date = new Date();
+                var d = date.getDate();
+                var m = date.getMonth();
+                var y = date.getFullYear();
+
+                var tooltip = $('<div/>').qtip({
+                    id: 'fullcalendar',
+                    prerender: true,
+                    content: {
+                        text: ' ',
+                        title: {
+                            button: true
+                        }
+                    },
+                    position: {
+                        my: 'bottom center',
+                        at: 'top center',
+                        target: 'mouse',
+                        viewport: $('#fullcalendar'),
+                        adjust: {
+                            mouse: false,
+                            scroll: false
+                        }
+                    },
+                    show: false,
+                    hide: false,
+                    style: 'qtip-light'
+                }).qtip('api');
+
+                $('#fullcalendar').fullCalendar({
+//                    editable: true,
+                    height: 600,
+//                    width: 100,
+                    buttons: false,
+                    header: false
+                    ,
+                    minTime: "07:00:00",
+                    maxTime: "21:00:00",
+
+                    eventClick: function(data, event, view) {
+                        var content = '<h3>'+data.title+'       </h3>' +
+                                '<p><b>Start:</b> '+data.time+'<br />' +
+                                '<p><b>End:</b> '+data.endTime+'<br /></p>'+
+                                '<p><b>Location:</b> '+data.location+'<br /></p>'+
+                                '<p><b>Instructor:</b> '+data.instructor+'<br /></p>'
+                                ;
+
+                        tooltip.set({
+                            'content.text': content
+                        })
+                                .reposition(event).show(event);
+                    },
+                    dayClick: function() { tooltip.hide() },
+                    eventResizeStart: function() { tooltip.hide() },
+                    eventDragStart: function() { tooltip.hide() },
+                    viewDisplay: function() { tooltip.hide() },
+                });
+
+                {% for class in classes %}
+                    {% for key, value in class.days %}
+
+                $('#fullcalendar').fullCalendar( 'addEventSource',
+                        function(start, end, callback) {
+                            // When requested, dynamically generate a
+                            // repeatable event for every monday.
+                            var events = [];
+//                            var monday = 1;
+                            var one_day = (24 * 60 * 60 * 1000);
+
+                            for (loop = start.getTime();
+                                 loop <= end.getTime();
+                                 loop = loop + one_day) {
+
+                                var column_date = new Date(loop);
+
+                                if (column_date.getDay() == {{ value }}) {
+                                    // we're in Monday, create the event
+                                    var startTime = "{{ class.startTime }}";
+                                    var endTime = "{{ class.endTime }}";
+                                    var parseStartTime = startTime.split(":");
+                                    var parseEndTime = endTime.split(":");
+                                    console.log(parseStartTime[0]);
+                                    console.log(parseEndTime[0]);
+                                    events.push({
+                                        title: '{{ class.className }}',
+                                        start: new Date(column_date.setHours(parseStartTime[0], parseStartTime[1])),
+                                        end: new Date(column_date.setHours(parseEndTime[0], parseEndTime[1])),
+                                        {#end: new Date(column_date.setMinutes({{ class.duration }})),#}
+//                                        end: new Date(column_date.setMinutes(90)),
+                                        allDay: false,
+                                        location: "{{ class.location }}",
+                                        time: "{{ class.startTime }}",
+                                        endTime: "{{ class.endTime }}",
+                                        instructor: "{{ class.instructorName }}",
+                                    });
+                                }
+                            } // for loop
+
+                            // return events generated
+                            callback( events );
+                        }
+                );
+                    {% endfor %}
+                {% endfor %}
+                $('#fullcalendar').fullCalendar('changeView', 'agendaWeek');
+
+            }());
+        });
+    </script>
+
+{% endblock head %}
+
+    {% block title %} Profile{% endblock title %}
+
+
+{% block content %}
+
+
+    <div style="display: inline-block;">
+        {#
+        User's Profile Picture
+        #}
+        <img src="images/{{ session.user.picture }}" style="width: 15%; height: 20%;" alt="">
+        {#
+        User's Name
+        #}
+        <p style="font-weight: bold; font-size: large; padding: 0;">Name: {{ session.user.name|title }}</p>
+        {#
+        User's ID
+        #}
+        <p style="font-weight: bold; font-size: large; padding: 0;">ID: {{ session.user.id }}</p>
+
+    </div>
+
+    <div>
+        <form action="/pay" method="post" style="display: inline-block;">
+            <button type="submit" style="font-weight: bold; display: inline-block;"
+                    {% if user.externeedToPay == true %}
+                    class="btn btn-danger">
+            Click to Pay the Gym Fee!
+                {% else %}
+                    class="btn btn-success" disabled>
+                    Gym Fee Paid!
+                {% endif %}
+            </button>
+        </form>
+    </div>
+    <div>
+        <button
+        {% if attribute(certificate, "YEAR (user_certificates.uploaded_at)") == false %}
+            class="btn btn-danger upload" style="font-weight: bold; display: inline-block;">
+            You need to upload your Dr. Certificate to be able to use the athletics facilities!
+        {% elseif attribute(certificate, "YEAR (user_certificates.uploaded_at)") == true and certificate.certificate_status == "0"  %}
+            class="btn btn-success" disabled>
+            Certificate uploaded and awaiting confirmation!
+        {% elseif attribute(certificate, "YEAR (user_certificates.uploaded_at)") == true and certificate.certificate_status == "1" %}
+            class="btn btn-primary" disabled>
+            Certificate uploaded and Approved by The Nurse!
+            {% elseif attribute(certificate, "YEAR (user_certificates.uploaded_at)") == true and certificate.certificate_status == "2" %}
+                class="btn btn-danger upload" style="font-weight: bold; display: inline-block;">
+                Your previous Certificate has been rejected by the Nurse!
+                You need to upload another Dr. Certificate to be able to use the athletics facilities!
+        {% endif %}
+        </button>
+
+        <div class="uploadDiv">
+         <form action="/upload_dr_certificate" method="post" enctype='multipart/form-data'>
+
+            <div class="form-group">
+                <label class="control-label col-md-3 col-sm-3 col-xs-12">File with users <span
+                            class="required">*</span>
+                </label>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <label class="btn btn-default btn-primary btn-file">
+                        <input type="file" name="users_file" id="users_file">
+
+                    </label>
+                    <span class='' id="upload-file-info"></span>
+                </div>
+            </div>
+            <div class="ln_solid"></div>
+            <div class="form-group">
+                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                    <button type="submit" class="btn btn-success" name="submit">Submit</button>
+                </div>
+            </div>
+         </form>
+        </div>
+    </div>
+
+
+    {#
+        User's Schedule of registered classes
+        #}
+    <h2 style="color: lightcoral; font-size: large; font-weight: bold;">Your Schedule of Classes You Registered For: </h2>
+    <div id="fullcalendar"></div>
+
+    <!-- jQuery -->
+    {#<script src="js/jquery.min.js"></script>#}
+    <script src="js/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="js/Chart.min.js"></script>
+    <!-- Custom Theme Scripts -->
+    <script src="js/custom.min.js"></script>
+
+    <script>
+        jQuery('.uploadDiv').toggle();
+        jQuery('.upload').click(function () {
+            jQuery('.uploadDiv').toggle();
+
+        });
+    </script>
+
+{% endblock content %}
+

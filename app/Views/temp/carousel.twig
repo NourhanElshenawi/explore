@@ -1,0 +1,60 @@
+{% extends "../index.twig" %}
+
+{% block head %}
+
+    <style>
+        p {
+            color: red;
+            margin: 5px;
+            cursor: pointer;
+        }
+        p:hover {
+            background: yellow;
+        }
+    </style>
+
+    <style>
+        #sortable  li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
+        .sortable { list-style-type: none; margin: 0; padding: 0; width: 450px; }
+        .sortable  li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
+        .sortable {display: inline-block; width: 100%; border: dashed;}
+    </style>
+
+{% endblock head %}
+
+{% block body %}
+<form action="/car" method="post">
+    <div class="content_container" style="width: 100%">
+        <ul id="sortable1" class="sortable connectedSortable">
+
+            {% for image in carouselImages %}
+                <li>
+                    <img src="images/{{ image.name }}" alt="" style="width: 100%; height: 100%;" id="{{ image.id }}"/>
+                    {#<input type='hidden' name='vegi[]' value='{{ image.id }}'/>#}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="content_container" style="width: 100%">
+        <ul id="sortable2" class="sortable connectedSortable">
+            {% for image in notIncludedCarouselImages %}
+                <li>
+                    <img src="images/{{ image.name }}" alt="" style="width: 100%; height: 100%;"/>
+                    {#<input type='hidden' name='fruits[]' value='{{ image.id }}'/>#}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+
+    <input type="submit" value="Update Carousel" id="go" name="go">
+</form>
+
+<script>
+    $( "#go" ).click(function() {
+//        $( this ).slideUp();
+        alert("HI");
+    });
+</script>
+{% endblock body %}

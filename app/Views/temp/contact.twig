@@ -1,0 +1,72 @@
+{% extends "../master.twig" %}
+
+{% block title %} Contact {% endblock title %}
+
+{% block content %}
+
+    <div class="row"><!--Container row-->
+
+        <div class="span8 contact"><!--Begin page content column-->
+
+            <h2>Contact Us</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla iaculis mattis lorem, quis gravida nunc
+                iaculis ac. Proin tristique tellus in est vulputate luctus fermentum ipsum molestie. Vivamus tincidunt
+                sem eu magna varius elementum. Maecenas felis tellus, fermentum vitae laoreet vitae, volutpat et
+                urna.</p>
+
+            <div class="alert alert-success">
+                Well done! You successfully read this important alert message.
+            </div>
+
+            <form action="/contact" method="post" id="contact-form">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-user"></i></span>
+                    <input class="span4" name="fullName" id="prependedInput" size="16" type="text" placeholder="Name">
+                </div>
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-envelope"></i></span>
+                    <input class="span4" name="email" id="prependedInput" size="16" type="email"
+                           placeholder="Email Address">
+                </div>
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-globe"></i></span>
+                    <input class="span4" name="website" id="prependedInput" size="16" type="text"
+                           placeholder="Website URL">
+                </div>
+                <div class="textarea form-group">
+                    <textarea class="span6" name="message" id="message"
+                              placeholder="Write your message here.."></textarea>
+                </div>
+                <div class="row">
+                    <div class="span2">
+                        <input type="submit" class="btn btn-inverse" value="Send Message">
+                    </div>
+                </div>
+            </form>
+
+        </div> <!--End page content column-->
+
+        <!-- Sidebar
+        ================================================== -->
+        <div class="span4 sidebar page-sidebar"><!-- Begin sidebar column -->
+            <h5 class="title-bg">Our Location</h5>
+            <address>
+                <strong>Piccolo</strong><br>
+                123 Main St, Suite 600<br>
+                San Francisco, CA 94107<br>
+                <abbr title="Phone">P:</abbr> (123) 456-7890
+            </address>
+
+            <address>
+                <strong>Jimmy Doe</strong><br>
+                <a href="mailto:#">first.last@gmail.com</a>
+            </address>
+
+            <h5 class="title-bg">Map Us</h5>
+            <img src="img/location-map.jpg" alt="map">
+
+        </div><!-- End sidebar column -->
+
+    </div><!-- End container row -->
+
+{% endblock content %}

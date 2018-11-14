@@ -1,0 +1,212 @@
+{% extends "master.twig" %}
+
+
+{% block head %}
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    {#<link href="css/font-awesome.min.css" rel="stylesheet">#}
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    {#<link href="css/custom.min.css" rel="stylesheet">#}
+
+
+{% endblock head %}
+
+    {% block title %} User Characteristics{% endblock title %}
+
+
+{% block content %}
+    <div>
+        <ul class="nav nav-tabs">
+            <li id="age" role="presentation" class="active"><a href="#" style="font-weight: bold; font-size: large;">Age</a></li>
+            <li id="gender" role="presentation"><a href="#" style="font-weight: bold; font-size: large;">Gender</a></li>
+        </ul>
+
+        <div id="ageDiv" style="width: 80%; height: 50%;">
+            <h2>Age Diversity of Users</h2>
+            <canvas id="ageChart"></canvas>
+        </div>
+
+        <div id="genderDiv" style="width: 80%; height: 50%; display: none;">
+            <h2>Gender Diversity of Users</h2>
+            <canvas id="genderChart"></canvas>
+        </div>
+
+    </div>
+
+
+    <script src="js/jquery.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- Chart.js -->
+    <script src="js/Chart.min.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script src="js/custom.min.js"></script>
+
+
+    <script>
+        Chart.defaults.global.legend = {
+            enabled: false
+        };
+
+        var ctx = document.getElementById("monthChart");
+        var monthChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    {% for key,value in months %}
+                    {% if loop.last %}
+                    "{{ key }}"
+                    {% else %}
+                    "{{ key }}",
+                    {% endif %}
+
+                    {% endfor %}
+                ],
+                datasets: [{
+                    label: '# of Visits',
+                    backgroundColor: "#26B99A",
+                    data: [
+                        {% for key,value in months %}
+                        {% if loop.last %}
+                        {{ value }}
+                        {% else %}
+                        {{ value }},
+                        {% endif %}
+
+                        {% endfor %}
+                    ]
+                }
+
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+    <script>
+        var ctx = document.getElementById("genderChart");
+        var data = {
+            labels: [
+                {% for key,value in gender %}
+                    {% if loop.last %}
+                        "{{ key }}"
+                    {% else %}
+                        "{{ key }}",
+                    {% endif %}
+                {% endfor %}
+            ],
+            datasets: [{
+                label: "AAA",
+                data: [
+                    {% for key,value in gender %}
+                        {% if loop.last %}
+                        "{{ value }}"
+                        {% else %}
+                        "{{ value }}",
+                        {% endif %}
+                    {% endfor %}
+                ],
+                backgroundColor: [
+                    "#455C73",
+                    "#9B59B6",
+                    "#BDC3C7",
+                    "#26B99A",
+                    "#3498DB"
+                ],
+                hoverBackgroundColor: [
+                    "#34495E",
+                    "#B370CF",
+                    "#CFD4D8",
+                    "#36CAAB",
+                    "#49A9EA"
+                ]
+
+            }]
+        };
+
+        var genderChart = new Chart(ctx, {
+            type: 'doughnut',
+            tooltipFillColor: "rgba(51, 51, 51, 0.55)",
+            data: data
+        });
+
+        // Pie chart
+        var ctx = document.getElementById("ageChart");
+        var data = {
+            datasets: [{
+                data: [
+                    {% for key,value in age %}
+                    {% if loop.last %}
+                    "{{ value }}"
+                    {% else %}
+                    "{{ value }}",
+                    {% endif %}
+                    {% endfor %}
+                ],
+                backgroundColor: [
+                    "#455C73",
+                    "#9B59B6",
+                    "#BDC3C7",
+                    "#26B99A",
+                    "#3498DB"
+                ],
+                label: 'My dataset' // for legend
+            }],
+            labels: [
+                {% for key,value in age %}
+                    {% if loop.last %}
+                    "Aged {{ key }}"
+                    {% else %}
+                    "Aged {{ key }}",
+                    {% endif %}
+                {% endfor %}
+            ]
+        };
+
+        var ageChart = new Chart(ctx, {
+            data: data,
+            type: 'pie',
+            otpions: {
+                legend: false
+            }
+        });
+    </script>
+
+
+    <script>
+        jQuery('#age').click(function() {
+            jQuery(this).toggleClass('active');
+            jQuery('#gender').removeClass('active');
+            jQuery('#ageDiv').css('display','');
+            jQuery('#genderDiv').css('display','none');
+        });
+
+        jQuery('#gender').click(function() {
+            jQuery(this).toggleClass('active');
+            jQuery('#age').removeClass('active');
+            jQuery('#genderDiv').css('display','');
+            jQuery('#ageDiv').css('display','none');
+        });
+
+    </script>
+{% endblock content %}
+
+
+
+

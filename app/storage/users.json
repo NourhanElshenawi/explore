@@ -1,0 +1,71 @@
+[
+   {
+     "name":"nourhan",
+     "email":"n@acg.edu",
+     "password":"1234",
+     "birthDate": "1994-10-01",
+     "gender": "f",
+     "membershipType": "0",
+     "picture": "headshot.jpg",
+     "admin": "1",
+     "active": "1"
+   },
+   {
+     "name":"nora",
+     "email":"f@acg.edu",
+     "password":"1234",
+     "birthDate": "1994-06-01",
+     "gender": "f",
+     "membershipType": "1",
+     "picture": "headshot.jpg",
+     "admin": "0",
+     "active": "0"
+   },
+   {
+     "name":"kostas",
+     "email":"kostas@example.com",
+     "password":"kostas",
+     "birthDate": "1991-09-16",
+     "gender": "m",
+     "membershipType": "0",
+     "picture": "headshot.jpg",
+     "admin": "1",
+     "active": "1"
+   },
+   {
+     "name":"Jane",
+     "email":"jane@example.com",
+     "password":"jane",
+     "birthDate": "1991-09-16",
+     "gender": "f",
+     "membershipType": "0",
+     "picture": "headshot.jpg",
+     "admin": "0",
+     "active": "1"
+   },
+   {
+     "name":"kate",
+     "email":"kate@acg.edu",
+     "password":"1234",
+     "birthDate": "1994-10-01",
+     "gender": "f",
+     "membershipType": "0",
+     "picture": "headshot.jpg",
+     "admin": "0",
+     "active": "1"
+   },
+   {
+     "name":"Robin",
+     "email":"robin@acg.edu",
+     "password":"1234",
+     "birthDate": "1994-10-01",
+     "gender": "m",
+     "membershipType": "0",
+     "picture": "headshot.jpg",
+     "admin": "0",
+     "active": "1"
+   }
+]
+
+
+

@@ -1,0 +1,181 @@
+{% extends "master.twig" %}
+
+{% block head %}
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="css/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+{% endblock head %}
+
+{% block title %} Pending {% endblock title %}
+
+{% block content %}
+    <div class="row">
+            <div class="x_panel">
+                <div class="x_title">
+                    <h2>Pending Certificates</h2>
+
+                    <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+
+                    <p>Download the file, view it, and approve/reject it.</p>
+
+                    <!-- start project list -->
+                    <table class="table table-striped" style="width: 100%;">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Member's Name</th>
+                            <th>Type</th>
+                            <th>File</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+
+                        {% for user in users %}
+                            <tr class="user_row">
+                                <td>{{ loop.index }}</td>
+                                <td> {{ user.name|capitalize }} </td>
+                                <td>
+                                    {% if user.membershipType == 0 %}
+                                        Non-Paid
+                                    {% else %}
+                                        Paid
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    {% if user.certificate_file is not null %}
+                                        {#<a target="_blank" href="/certificates/{{ user.certificate_file }}">{{ user.certificate_file }}</a>#}
+                                        {#<a target="_blank" href="../../storage/certificates/{{ user.certificate_file }}">{{ user.certificate_file }}</a>#}
+                                        <a target="_blank" href="../../../public/certificates/arrows.png">{{ user.certificate_file }}</a>
+                                    {% else %}
+                                        Not uploaded yet
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button value="{{ user.id }}" type="button" class="approve_btn btn btn-success btn-xs"><i class="fa fa-check"></i> Approve</button>
+                                    <button value="{{ user.id }}" type="button" class="reject_btn btn btn-danger btn-xs"><i class="fa fa-close"></i> Reject</button>
+                                </td>
+                                {# I can change the above td to the one below #}
+                                {#<td>#}
+                                    {#<ul class="nav navbar-right panel_toolbox">#}
+                                        {#<li class="dropdown">#}
+                                            {#<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">#}
+                                                {#<i class="fa fa-check"></i>#}
+                                            {#</a>#}
+                                        {#</li>#}
+                                        {#<li>#}
+                                            {#<a class="close-link delete" value="{{ class.id }}">#}
+                                                {#<i class="fa fa-close"></i></a>#}
+                                        {#</li>#}
+                                    {#</ul>#}
+                                {#</td>#}
+                            </tr>
+                        {% endfor %}
+
+
+                        </tbody>
+                    </table>
+                    <!-- end project list -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        jQuery('.approve_btn').click(function() {
+
+            var approve_btn = this;
+
+            if (confirm("Are you sure you want to approve this certificate?")) {
+                console.log("The id is: " + jQuery(this).attr('value'));
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: '/approveCertificate',
+                    data: {
+                        user_certificate_id: jQuery(this).attr('value')
+                    },
+                    success: function (data) {
+                        console.log("data returned: " + data);
+
+                        if (data=='true') {
+                            approve_btn.closest('.user_row').remove();
+                        } else {
+                            jQuery(approve_btn).closest('.user_row').css('opacity', '0.3');
+                            alert('Operation Failed! Please contact support.');
+                        }
+                    }
+                });
+            }
+        });
+
+        jQuery('.reject_btn').click(function() {
+
+            var approve_btn = this;
+
+            if (confirm("Are you sure you want to reject this certificate?")) {
+                console.log("The id is: " + jQuery(this).attr('value'));
+
+                jQuery.ajax({
+                    type: 'POST',
+                    url: '/rejectCertificate',
+                    data: {
+                        user_certificate_id: jQuery(this).attr('value')
+                    },
+                    success: function (data) {
+                        console.log("data returned: " + data);
+
+                        if (data=='true') {
+                            approve_btn.closest('.user_row').remove();
+                        } else {
+                            jQuery(approve_btn).closest('.user_row').css('opacity', '0.3');
+                            alert('Operation Failed! Please contact support.');
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+
+    <!-- jQuery -->
+    <script src="js/jquery.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/bootstrap-progressbar.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/custom.min.js"></script>
+
+{% endblock content %}
+
+
+

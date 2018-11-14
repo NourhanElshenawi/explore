@@ -1,0 +1,65 @@
+{% extends "../index.twig" %}
+
+{% block body %}
+
+    <form action="/admin" method="post" enctype="multipart/form-data">
+
+        Select Image to upload:
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="submit" value="Upload Image" name="submit">
+
+    </form>
+
+    <div id="banner_image">
+        <div id="slider-wrapper">
+            <div id="slider" class="nivoSlider">
+                {% for image in carouselImages %}
+                    <img src="images/{{ image.name }}" alt="" />
+                    {#<img src="images/home_2.jpg" alt="" />#}
+                    {#<img src="images/Untitled.png" alt="" />#}
+                {% endfor %}
+            </div><!--close slider-->
+        </div><!--close slider_wrapper-->
+    </div><!--close banner_image-->
+
+    <div class="content_container" style="width: 100%">
+
+    {% for image in allCarouselImages %}
+        {% set size = loop.length  %}
+        <form action="/admin" method="post">
+            <img style="height: 30%; width: 30%; display: inline;" src="images/{{ image.name }}" alt="" />
+              <div>
+                  ID: <input type="text" name="id" value="{{ image.id }}" size="{{ image.id|length }}" readonly><br>
+                    <select id="position" name="position">
+
+                        {% for i in 1..size %}
+                            {% if i == image.position %}
+                                <option selected>
+                                {% else %}
+                                    <option>
+                                {% endif %}
+                                {{ i }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <select id="included" name="included">
+                          {% if 1 == image.included %}
+                              <option selected> Included </option>
+                              <option> Not Included </option>
+                              <option> Delete </option>
+                              {% else %}
+                                  <option> Included </option>
+                                  <option selected> Not Included </option>
+                                  <option> Delete </option>
+                          {% endif %}
+                    </select>
+
+
+              </div>
+
+        </form>
+    {% endfor %}
+
+    </div>
+
+{% endblock body %}

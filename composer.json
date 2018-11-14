@@ -1,17 +1,29 @@
 {
-
-
-
-  
-    "require": {
-        "corneltek/pux": "~1.5",
-        "league/plates": "^3.1"
-    },
-
-    "autoload": {
-        "psr-4": {
-            "Gazzete\\": "app/"
+    "name": "nourhan/project1",
+    "authors": [
+        {
+            "name": "nourhan",
+            "email": "nourhan_elshenawy@hotmail.com"
         }
-
+    ],
+    "require": {
+        "twig/twig": "^1.24",
+        "slim/slim": "^3.5",
+        "vlucas/phpdotenv": "^2.3",
+        "paypal/rest-api-sdk-php": "1.*.*"
+    },
+    "require-dev": {
+        "raveren/kint": "^1.0"
+    },
+    "autoload":{
+        "psr-4":{
+            "Nourhan\\": "app/",
+            "Core\\": "core/"
+        },
+        "files": [
+            "app/helpers.php",
+            "app/setup.php"
+           ]
     }
+
 }

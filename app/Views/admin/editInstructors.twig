@@ -1,0 +1,598 @@
+{% extends "master.twig" %}
+
+{% block head %}
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <!-- NProgress -->
+    <link href="css/nprogress.css" rel="stylesheet">
+    <!-- iCheck -->
+    <link href="css/green.css" rel="stylesheet">
+
+    <!-- Custom Theme Style -->
+    <link href="css/custom.min.css" rel="stylesheet">
+    <style>
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .split {
+            display: inline-block;
+            /*width: 10%;*/
+            margin: 0;
+        }
+
+        th {
+            /*width: 15%;*/
+            padding: 0;
+        }
+
+        p {
+            font-weight: bold;
+            font-size: small;
+        }
+
+
+
+    </style>
+
+    <script src="js/bootstrap.js"></script>
+
+{% endblock head %}
+
+{% block title %} Edit Instructors {% endblock title %}
+
+{% block content %}
+
+    {%  set admin = "Admin" %}
+    {% set notAdmin = "Regular User" %}
+
+    <div class="clearfix"></div>
+
+    <div class="row">
+        {#<div class="col-md-12">#}
+        <div class="x_panel2">
+            <div class="x_title">
+                <h2 style="width: auto; margin-right: 3%;">Gym Users</h2>
+
+                <button class="fa fa-plus add" style="margin-top: 1%; border-radius: 25px;"></button>
+
+                <button class="fa fa-users add-existing" style="margin-top: 1%; border-radius: 25px; font-weight: bold;">Add from Existing Users</button>
+
+                <form style="margin: 0; border-left: 1px solid #5F656A;" role="search" method="get" class="search-form" action="/editInstructors">
+                    <label style="display: inline-block;">
+                        <span class="screen-reader-text">Search for:</span>
+                        <input style="margin: 0;" type="search" class="search-field" placeholder="Search …" value="" name="keyword">
+                    </label>
+                    <input type="submit" class="search-submit" value="Search">
+                </form>
+
+                <div class="clearfix"></div>
+            </div>
+            <div>
+
+                <table class="addInstructor">
+                    <thead>
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Picture</th>
+                        <th>Is Admin</th>
+                        <th>Birth Date</th>
+                        <th>Gender</th>
+                        <th>Membership Type</th>
+                        <th>Active</th>
+                        <th>Specialty</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <form action="/addInstructor" method="post" enctype="multipart/form-data">
+                        <tr>
+                            <td>
+                                <input type="text" style="width: 100%;" name="name" required>
+                            </td>
+
+                            <td>
+                                <input type="email" style="width: 100%;" name="email" required>
+                            </td>
+
+                            <td>
+                                <input type="password" style="width: 100%;" name="password" required>
+                            </td>
+
+                            <td>
+                                <input type="file" style="width: 100%;" name="picture" required>
+                            </td>
+
+                            <td>
+                                <select name="admin" style="width: 100%;" required>
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <input type="date" style="width: 100%;" name="birthDate" required>
+                            </td>
+
+                            <td>
+                                <select name="gender" style="width: 100%;" required>
+                                    <option value="m">Male</option>
+                                    <option value="f">Female</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="membershipType" style="width: 100%;" required>
+                                    <option value="1">Paid</option>
+                                    <option value="0">Non-Paid</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="active" style="width: 100%;" required>
+                                    <option value="1">Active</option>
+                                    <option value="0">Not Active</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="text" name="specialty">
+                            </td>
+                        </tr>
+
+
+                        <tr colspan="8">
+                            <td>
+                                <button type="submit" style="font-weight: bold;"> Add User </button>
+                            </td>
+                        </tr>
+                    </form>
+                    </tbody>
+                </table>
+                <table class="addExisting">
+                    <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Specialty</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <form action="/addInstructorByEmail" method="post" enctype="multipart/form-data">
+                        <tr>
+                            <td>
+                                <input type="email" style="width: 100%;" name="email" placeholder="Enter Email.." required>
+                            </td>
+
+                            <td>
+                                <input type="text" name="specialty" placeholder="Specialty">
+                            </td>
+                        </tr>
+
+
+                        <tr colspan="8">
+                            <td>
+                                <button type="submit" style="font-weight: bold;"> Add User </button>
+                            </td>
+                        </tr>
+                    </form>
+                    </tbody>
+                </table>
+
+                <table class="table table-striped projects">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Password</th>
+                        <th>Specialty</th>
+                        <th>Phone</th>
+                        <th>Birth Date</th>
+                        <th>Gender</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for instructor in instructors %}
+                            <tr style="padding: 0;">
+
+                                <td colspan="9" style="border: none; padding: 0;">
+
+                                    <div class="x_panel" style="padding: 0;">
+
+                                        <div class="x_title" style="padding: 4px; border-bottom: none;">
+                                            <div class="split" style="width: 4%">
+                                                {{ loop.index }}
+                                            </div>
+
+                                            <div class="split" style="width: 8%">
+                                                <p>{{ instructor.name|capitalize }}</p>
+                                            </div>
+
+                                            <div class="split" style="width: 12%">
+                                                <p>{{ instructor.email }}</p>
+                                            </div>
+
+                                            <div class="split" style="width: 15%">
+                                                <p>{{ instructor.password }}</p>
+                                            </div>
+
+                                            <div class="split" style="width: 16%">
+                                                <p>{{ instructor.specialty|capitalize }}</p>
+                                            </div>
+
+                                            <div class="split" style="width: 10%">
+                                                <p>
+                                                    {% if instructor.phone is defined %}
+                                                        {{ instructor.phone }}
+                                                    {% else %}
+                                                        "Not Available"
+                                                    {% endif %}
+                                                </p>
+                                            </div>
+
+                                            <div class="split" style="width: 18%">
+                                                <p>{{ instructor.birthDate }}</p>
+                                            </div>
+
+                                            <div class="split" style="width: 7%">
+                                                <p>{{ instructor.gender|capitalize }}</p>
+                                            </div>
+
+
+                                            <ul class="nav navbar-right panel_toolbox">
+                                                <li>
+                                                    <a class="collapse-link"><i class="fa fa-chevron-down"></i></a>
+                                                </li>
+                                                <li class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                                        <i class="fa fa-wrench"></i>
+                                                    </a>
+                                                    <ul class="dropdown-menu" role="menu">
+
+                                                        <li>
+
+                                                            <input type="hidden" id="edit" name="edit" value="{{ instructor.id }}">
+                                                            <a href="#" class="edit" value="{{ instructor.id }}">Edit User</a>
+
+                                                        </li>
+                                                    </ul>
+                                                </li>
+                                                <li>
+                                                    <a class="close-link delete" value="{{ instructor.id }}">
+                                                        <i class="fa fa-close"></i></a>
+
+                                                </li>
+                                            </ul>
+                                            <div class="clearfix"></div>
+                                        </div>
+
+                                        <div class="x_content update" style="padding: 0; display: none;">
+
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                    <th>Name</th>
+                                                    <th>Email</th>
+                                                    <th>Password</th>
+                                                    <th>Age</th>
+                                                    <th>Gender</th>
+                                                    <th>Assigned Classes</th>
+                                                    <th>Classification</th>
+                                                    <th>Specialty</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+
+                                                        <td>
+                                                            {{ instructor.name|capitalize }}
+                                                        </td>
+                                                        <td>{{ instructor.email }}</td>
+                                                        <td>{{ instructor.password }}</td>
+                                                        <td>{{ instructor.birthDate }}</td>
+                                                        <td>{{ instructor.gender|capitalize }}</td>
+                                                        <td>
+                                                            <div>
+
+                                                                {% if instructor.classes is empty %}
+                                                                    <p style="padding: 0; font-size: medium;">"Not assigned to any classes"</p>
+
+                                                                    {% else %}
+                                                                        {% for class in instructor.classes %}
+                                                                            <p style="padding: 0; font-size: medium;">{{ class.name|capitalize }}</p>
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div>
+                                                                {% if instructor.admin == 0 and instructor.student == 0 and instructor.faculty == 0 and instructor.staff == 0 and instructor.alumni == 0 and instructor.external == 0 %}
+                                                                    {{ "N/A" }}
+                                                                {% endif %}
+                                                                {% if instructor.admin == 1 %}
+                                                                    <p style="padding: 0; font-size: medium;">{{ "Administrator" }}</p>
+                                                                {% endif %}
+                                                                {% if instructor.student == 1  %}
+                                                                    <p style="padding: 0; font-size: medium;">{{ "Student" }}</p>
+                                                                {% endif %}
+                                                                {% if instructor.faculty == 1  %}
+                                                                    <p style="padding: 0; font-size: medium;">{{ "Faculty" }}</p>
+                                                                {% endif %}
+                                                                {% if instructor.staff == 1  %}
+                                                                    <p style="padding: 0; font-size: medium;">{{ "Staff" }}</p>
+                                                                {% endif %}
+                                                                {% if instructor.alumni == 1  %}
+                                                                    <p style="padding: 0; font-size: medium;">{{ "Alumni" }}</p>
+                                                                {% endif %}
+                                                                {% if instructor.external == 1  %}
+                                                                    <p style="padding: 0; font-size: medium;">{{ "External Paying" }}</p>
+                                                                {% endif %}
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            {{ instructor.specialty|capitalize }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr style="display: none;" class="updateInfo">
+                                                        <form action="/updateUser" method="post">
+
+                                                            <td>
+                                                                <input style="width: 100%;" type="text" id="name" name="name" value="{{ instructor.name }}">
+                                                            </td>
+
+                                                            <td>
+                                                                <input style="width: 100%;" type="email" id="email" name="email" value="{{ instructor.email }}">
+                                                            </td>
+
+                                                            <td>
+                                                                <input style="width: 100%;" type="text" id="password" name="password" value="{{ instructor.password }}">
+                                                            </td>
+
+                                                            <td>
+                                                                <input style="width: 100%;" type="date" id="birthDate" name="birthDate" value="{{ instructor.birthDate }}">
+                                                            </td>
+
+                                                            <td>
+                                                                <select name="gender" id="gender" style="width: 100%;">
+                                                                    {% if instructor.gender == "f" %}
+
+                                                                        <option value="F" selected>F</option>
+                                                                        <option value="M">M</option>
+                                                                    {% else %}
+                                                                        <option value="F">F</option>
+                                                                        <option value="M" selected>M</option>
+                                                                    {% endif %}
+                                                                </select>
+                                                            </td>
+
+                                                            <td>
+
+                                                                <select name="" id="" multiple disabled>
+                                                                    {% for class in classes %}
+                                                                        <option value="{{ class.classID }}"
+                                                                        {% for assignedClass in instructor.classes %}
+                                                                            {% if class.classID == assignedClass.classID %}
+                                                                                 selected
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                        > {{ class.className }}</option>
+                                                                    {% endfor %}
+                                                                </select>
+                                                            </td>
+
+                                                            <td>
+                                                                <select name="classification" id="classification" style="width: 100%;" multiple>
+                                                                    {% if instructor.admin == 1 %}
+                                                                        <option value="1" selected>{{ "Administrator" }}</option>
+                                                                    {% else %}
+                                                                        <option value="0">{{ "Administrator" }}</option>
+                                                                    {% endif %}
+                                                                    {% if instructor.student == 1 %}
+                                                                        <option value="1" selected>{{ "Student" }}</option>
+                                                                    {% else %}
+                                                                        <option value="0">{{ "Student" }}</option>
+                                                                    {% endif %}
+                                                                    {% if instructor.faculty == 1 %}
+                                                                        <option value="1" selected>{{ "Faculty" }}</option>
+                                                                    {% else %}
+                                                                        <option value="0">{{ "Faculty" }}</option>
+                                                                    {% endif %}
+                                                                    {% if instructor.staff == 1 %}
+                                                                        <option value="1" selected>{{ "Staff" }}</option>
+                                                                    {% else %}
+                                                                        <option value="0">{{ "Staff" }}</option>
+                                                                    {% endif %}
+                                                                    {% if instructor.alumni == 1 %}
+                                                                        <option value="1" selected>{{ "Alumni" }}</option>
+                                                                    {% else %}
+                                                                        <option value="0">{{ "Alumni" }}</option>
+                                                                    {% endif %}
+                                                                    {% if instructor.external == 1 %}
+                                                                        <option value="1" selected>{{ "External Paying" }}</option>
+                                                                    {% else %}
+                                                                        <option value="0">{{ "External Paying" }}</option>
+                                                                    {% endif %}
+                                                                </select>
+
+                                                            </td>
+                                                            <td>
+                                                                <input type="text" value="{{ instructor.specialty|capitalize }}">
+                                                            </td>
+
+                                                            <td>
+                                                                <input style="width: 100%;" type="hidden" name="id" value="{{ instructor.id }}">
+
+                                                                {#remove unnecessary attributes#}
+                                                                <button type="submit" value="{{ instructor.id }}">Update</button>
+                                                            </td>
+                                                        </form>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <!-- end project list -->
+            </div>
+        </div>
+    </div>
+    </div>
+
+
+
+    <script>
+        jQuery(document).ready(function() {
+
+            jQuery('.collapse-link').click(function() {
+                toggle(this);
+
+            })  ;
+
+            jQuery('.close-link').click(function () {
+                var $BOX_PANEL = jQuery(this).closest('.x_panel');
+            });
+
+        });
+        jQuery('.addInstructor').toggle();
+        jQuery('.add').click(function() {
+            if(jQuery('.addExisting').is(':visible')){
+                jQuery('.addExisting').toggle();
+            }
+            jQuery('.addInstructor').toggle();
+
+        });
+
+        jQuery('.addExisting').toggle();
+        jQuery('.add-existing').click(function() {
+
+            if(jQuery('.addInstructor').is(':visible')){
+                jQuery('.addInstructor').toggle();
+            }
+            jQuery('.addExisting').toggle();
+
+        });
+
+        jQuery('.edit').click(function() {
+
+            toggleOnce(this);
+            jQuery(this).toggleClass('fa-chevron-down');
+            jQuery(this).find('i').toggleClass('fa-chevron-up');
+            jQuery('.updateInfo').toggle();
+
+        });
+
+        jQuery('.delete').click(function() {
+            if (confirm("Are you sure you want to delete this user?")) {
+                jQuery(this).closest('.x_panel').remove();
+                jQuery.ajax(
+                        {
+                            type: 'POST',
+                            url: '/deleteuser',
+                            data: {
+                                id: jQuery(this).attr('value')
+                            },
+                            success: function (msg) {
+                                console.log("SUCCESS AJAX!");
+                            }
+                        }
+                );
+            }
+
+        });
+
+        function toggle($this) {
+
+            var $BOX_PANEL = jQuery($this).closest('.x_panel'),
+                    $ICON = jQuery($this).find('i'),
+                    $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+//            console.log($ICON);
+            if ($BOX_PANEL.attr('style')) {
+                $BOX_CONTENT.slideToggle(200, function(){
+                    $BOX_PANEL.removeAttr('style');
+
+                    $ICON.toggleClass('fa-chevron-down');
+                    $ICON.addClass('fa-chevron-up');
+                });
+            } else {
+                $BOX_CONTENT.slideToggle(200);
+                $BOX_PANEL.css('height', 'auto');
+                $ICON.toggleClass('fa-chevron-up');
+                $ICON.addClass('fa-chevron-down');
+            }
+
+            jQuery('.x_title').css('border-bottom', '2px solid');
+
+        }
+
+        function toggleOnce($this) {
+
+            var $BOX_PANEL = jQuery($this).closest('.x_panel'),
+//                    $ICON = jQuery($this).parent().parent().parent().first().find('i'),
+                    $ICON = jQuery($this).closest('.collapse-link'),
+                    $BOX_CONTENT = $BOX_PANEL.find('.x_content');
+
+            if ($BOX_PANEL.attr('style')) {
+                $BOX_CONTENT.slideToggle(200, function(){
+                    $BOX_PANEL.removeAttr('style');
+
+
+                    console.log($ICON);
+                    $ICON.toggleClass('fa-chevron-down');
+                    console.log($ICON);
+                    $ICON.addClass('fa-chevron-up');
+                    console.log($ICON);
+                });
+            }
+
+            $ICON.toggleClass('fa-chevron-down');
+            $ICON.toggleClass('fa-chevron-up');
+
+        }
+    </script>
+
+    <script>
+        jQuery('.edit').click(function() {
+
+            var $id = jQuery(this).attr('value');
+
+            jQuery(this).closest('.x_content').css('display','block');
+            jQuery(this).closest('.x_content').css('style','');
+
+        });
+
+    </script>
+
+
+    <!-- jQuery -->
+    {#<script src="js/jquery.min.js"></script>#}
+    <!-- Bootstrap -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- FastClick -->
+    <script src="js/fastclick.js"></script>
+    <!-- NProgress -->
+    <script src="js/nprogress.js"></script>
+    <!-- bootstrap-progressbar -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/bootstrap-progressbar.js"></script>
+
+    <!-- Custom Theme Scripts -->
+    <script>jQuery.noConflict();</script>
+    <script src="js/custom.min.js"></script>
+
+{% endblock content %}
+
+{% block info %}
+{% endblock info %}
+
