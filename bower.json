@@ -1,0 +1,7 @@
+{
+  "name": "Gazzete",
+  "dependencies": {
+    "admin-lte": "~2.1.1",
+    "bootstrap": "~3.3.4"
+  }
+}
