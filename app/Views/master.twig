@@ -8,26 +8,16 @@
     {% block head %}
     {% endblock %}
 
-        <title> {% block title %}{% endblock %} </title>
 
-
-    <style>
-        body{
-            color: white;
-        }
-    </style>
 
 </head>
 
 
-<body class="home page page-id-6 page-template page-template-template-homepage page-template-template-homepage-php wp-custom-logo _masterslider _msp_version_2.29.0 siteorigin-panels siteorigin-panels-home fully-background group-blog no-wc-breadcrumb storefront-full-width-content right-sidebar page-home yesp-youtube-iframe-ready mg_new_loader">
-<!-- Google Tag Manager -->
+<body id="page-top">
 
-    {% block nav %}
-        {{ include('nav.twig') }}
-    {% endblock nav %}
-
-    <div style="padding: 2%;">
+        {{ include('body.twig') }}
+{#
+<div >
         {% block content %}
         {% endblock content %}
     </div>
@@ -39,6 +29,8 @@
 
 {% block footer %}
 {% endblock %}
+
+#}
 
 
 
