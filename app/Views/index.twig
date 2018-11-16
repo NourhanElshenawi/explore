@@ -1,22 +1,31 @@
 {% extends "master.twig" %}
 
 {% block title %} Home {% endblock title %}
-{#
-{% block content %}
-    <div>
-        <p>
-            HELOOOOOO!!
-        </p>
-   </div>
-    <p>HIIIIIIIIIIIIII</p>
+
+{% block body %}
+
+    {# Block 1 full width with button #}
+    {{ include('full_width_block_button.twig') }}
+
+    {# Block 2 full width without button #}
+    {{ include('full_width_block.twig') }}
+
+    {{ include('body.twig') }}
 
 
-{% endblock content %}
+        {# subscribtion block #}
+        {{ include('subscribe.twig') }}
 
-{% block info %}
-    {{ include('info.twig') }}
-{% endblock info %}
 
-#}
+        {# Contact Block #}
+        {{ include('contact.twig') }}
+
+
+
+{% endblock body %}
+
+
+
+
 
 

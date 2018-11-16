@@ -14,33 +14,16 @@
 
 
 <body id="page-top">
-        {# Nav Bar #}
-        {{ include('nav.twig') }}
 
-        {# Block 1 full width with button #}
-        {{ include('full_width_block_button.twig') }}
+{{ include('nav.twig') }}
 
-        {# Block 2 full width without button #}
-        {{ include('full_width_block.twig') }}
+    {% block body %}
 
-        {{ include('body.twig') }}
-{#
-<div >
-        {% block content %}
-        {% endblock content %}
-    </div>
-
-
-    {% block info %}
-    {% endblock info %}
-
-
-{% block footer %}
-{% endblock %}
-
-#}
-
-
+    {% endblock %}
 
 </body>
+
+
+{{ include ('footer.twig') }}
+
 </html>
