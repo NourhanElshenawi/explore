@@ -11,13 +11,7 @@ return array(
     'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
     'Nourhan\\' => array($baseDir . '/app'),
     'Interop\\Container\\' => array($vendorDir . '/container-interop/container-interop/src/Interop/Container'),
-    'Http\\Promise\\' => array($vendorDir . '/php-http/promise/src'),
-    'Http\\Message\\MultipartStream\\' => array($vendorDir . '/php-http/multipart-stream-builder/src'),
-    'Http\\Message\\' => array($vendorDir . '/php-http/message-factory/src', $vendorDir . '/php-http/message/src'),
-    'Http\\Discovery\\' => array($vendorDir . '/php-http/discovery/src'),
-    'Http\\Client\\' => array($vendorDir . '/php-http/httplug/src'),
     'FastRoute\\' => array($vendorDir . '/nikic/fast-route/src'),
     'Dotenv\\' => array($vendorDir . '/vlucas/phpdotenv/src'),
     'Core\\' => array($baseDir . '/core'),
-    'Clue\\StreamFilter\\' => array($vendorDir . '/clue/stream-filter/src'),
 );

@@ -8,10 +8,7 @@ class ComposerStaticInit333c7474227e25b9280220426e85537c
 {
     public static $files = array (
         '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
-        'ddc0a4d7e61c0286f0f8593b1903e894' => __DIR__ . '/..' . '/clue/stream-filter/src/functions.php',
-        '8cff32064859f4559445b89279f3199c' => __DIR__ . '/..' . '/php-http/message/src/filters.php',
         '6bc45d0537e6858fd179bdbc31d62c79' => __DIR__ . '/..' . '/raveren/kint/Kint.class.php',
-        '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         'dab36b049019df8894ce858b98decae2' => __DIR__ . '/../..' . '/app/helpers.php',
         'c975b036af8df6866416c983804c3c30' => __DIR__ . '/../..' . '/app/setup.php',
     );
@@ -34,14 +31,6 @@ class ComposerStaticInit333c7474227e25b9280220426e85537c
         array (
             'Interop\\Container\\' => 18,
         ),
-        'H' => 
-        array (
-            'Http\\Promise\\' => 13,
-            'Http\\Message\\MultipartStream\\' => 29,
-            'Http\\Message\\' => 13,
-            'Http\\Discovery\\' => 15,
-            'Http\\Client\\' => 12,
-        ),
         'F' => 
         array (
             'FastRoute\\' => 10,
@@ -53,7 +42,6 @@ class ComposerStaticInit333c7474227e25b9280220426e85537c
         'C' => 
         array (
             'Core\\' => 5,
-            'Clue\\StreamFilter\\' => 18,
         ),
     );
 
@@ -78,27 +66,6 @@ class ComposerStaticInit333c7474227e25b9280220426e85537c
         array (
             0 => __DIR__ . '/..' . '/container-interop/container-interop/src/Interop/Container',
         ),
-        'Http\\Promise\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/promise/src',
-        ),
-        'Http\\Message\\MultipartStream\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/multipart-stream-builder/src',
-        ),
-        'Http\\Message\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/message-factory/src',
-            1 => __DIR__ . '/..' . '/php-http/message/src',
-        ),
-        'Http\\Discovery\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/discovery/src',
-        ),
-        'Http\\Client\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/php-http/httplug/src',
-        ),
         'FastRoute\\' => 
         array (
             0 => __DIR__ . '/..' . '/nikic/fast-route/src',
@@ -110,10 +77,6 @@ class ComposerStaticInit333c7474227e25b9280220426e85537c
         'Core\\' => 
         array (
             0 => __DIR__ . '/../..' . '/core',
-        ),
-        'Clue\\StreamFilter\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/clue/stream-filter/src',
         ),
     );
 
@@ -134,13 +97,6 @@ class ComposerStaticInit333c7474227e25b9280220426e85537c
             'PayPal' => 
             array (
                 0 => __DIR__ . '/..' . '/paypal/rest-api-sdk-php/lib',
-            ),
-        ),
-        'M' => 
-        array (
-            'Mailgun' => 
-            array (
-                0 => __DIR__ . '/..' . '/mailgun/mailgun-php/src',
             ),
         ),
     );

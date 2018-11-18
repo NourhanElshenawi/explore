@@ -7,10 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     '253c157292f75eb38082b5acb06f3f01' => $vendorDir . '/nikic/fast-route/src/functions.php',
-    'ddc0a4d7e61c0286f0f8593b1903e894' => $vendorDir . '/clue/stream-filter/src/functions.php',
-    '8cff32064859f4559445b89279f3199c' => $vendorDir . '/php-http/message/src/filters.php',
     '6bc45d0537e6858fd179bdbc31d62c79' => $vendorDir . '/raveren/kint/Kint.class.php',
-    '2c102faa651ef8ea5874edb585946bce' => $vendorDir . '/swiftmailer/swiftmailer/lib/swift_required.php',
     'dab36b049019df8894ce858b98decae2' => $baseDir . '/app/helpers.php',
     'c975b036af8df6866416c983804c3c30' => $baseDir . '/app/setup.php',
 );
