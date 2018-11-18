@@ -14,11 +14,19 @@
     // Initialize and add the map
     function initMap() {
         // The location of Uluru
-        var uluru = {lat: -25.344, lng: 131.036};
+        var uluru = {lat: 30.064742, lng: 31.249509};
+        var uluru2 = {lat: 31.064742, lng: 31.249509};
+        var uluru3 = {lat: 32.064742, lng: 31.249509};
         // The map, centered at Uluru
         var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 4, center: uluru});
+                document.getElementById('map'), {zoom: 7, center: uluru});
+        var map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 7, center: uluru2});
+        var map = new google.maps.Map(
+                document.getElementById('map'), {zoom: 7, center: uluru3});
         // The marker, positioned at Uluru
         var marker = new google.maps.Marker({position: uluru, map: map});
+        var marker = new google.maps.Marker({position: uluru2, map: map});
+        var marker = new google.maps.Marker({position: uluru3, map: map});
     }
 </script>
