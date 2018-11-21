@@ -21,7 +21,7 @@
         var uluru3 = {lat: 32.064742, lng: 31.249509};
         // The map, centered at Uluru
         var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 4, center: uluru});
+                document.getElementById('map'), {zoom: 7, center: uluru, mapTypeControl: false, streetViewControl: false});
 
 
         var styles = { silver: [
@@ -120,12 +120,16 @@
 
         // The marker, positioned at Uluru
         var marker = new google.maps.Marker({position: uluru, map: map});
-        var map = new google.maps.Map(
-        document.getElementById('map'), {zoom: 7, center: uluru});
-        var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 7, center: uluru2});
-        var map = new google.maps.Map(
-                document.getElementById('map'), {zoom: 7, center: uluru3});
+
+//        var map = new google.maps.Map(
+//        document.getElementById('map'), {zoom: 7, center: uluru});
+
+//        var map = new google.maps.Map(
+//                document.getElementById('map'), {zoom: 7, center: uluru2});
+
+//        var map = new google.maps.Map(
+//                document.getElementById('map'), {zoom: 7, center: uluru3});
+
         // The marker, positioned at Uluru
         var marker = new google.maps.Marker({position: uluru, map: map});
         var marker = new google.maps.Marker({position: uluru2, map: map});
