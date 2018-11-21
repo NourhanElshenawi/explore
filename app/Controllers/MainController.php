@@ -15,6 +15,7 @@ class MainController extends Controller
     public function index()
     {
         echo $this->twig->render('index.twig');
+//        echo $this->twig->render('mapStyle.twig');
     }
 
 

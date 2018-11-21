@@ -1,9 +1,16 @@
+
 {% extends "master.twig" %}
+
 
 {% block title %} Home {% endblock title %}
 
 {% block body %}
 
+
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCvpJ6J-cjmh68XUAW96uBK_8HAkktyx0w&callback=initMap">
+    </script>
     {# Block 1 full width with button #}
     {{ include('full_width_block_button.twig') }}
 
@@ -11,6 +18,8 @@
     {{ include('full_width_block.twig') }}
 
     {#{{ include('body.twig') }}#}
+
+    {{ include('map.twig') }}
 
     <!-- Projects Section -->
     <section id="projects" class="projects-section bg-light">
