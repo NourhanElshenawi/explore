@@ -25,11 +25,13 @@
     <!-- Projects Section -->
     <section id="projects" class="projects-section bg-light">
 
+
+        {# feature block #}
+        {% set feature_title = 'Header' %}
+        {% set feature_description = 'Description' %}
+        {{ include('featured.twig') }}
+        
         <div class="container">
-            {# feature block #}
-            {% set feature_title = 'Header' %}
-            {% set feature_description = 'Description' %}
-            {{ include('featured.twig') }}
 
             {# Image Right block #}
 
