@@ -21,6 +21,7 @@ class SubsController extends Controller
     public function subscribe()
     {
         $db = new DB();
+//        var_dump($_GET['email']);
         $db->addSubs($_POST['email']);
 
         redirect('/');

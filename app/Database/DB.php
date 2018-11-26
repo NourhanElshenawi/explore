@@ -82,10 +82,13 @@ class DB
     public function addSubs($email)
     {
         $stmt = $this->conn->prepare("insert into {$this->dbname}.subs
-                                    (email)");
+                                    (`email`)
+                                    VALUES (:email);
+                                    ");
 
         try{
-            $stmt->bindValue(':email', $email);
+//            ddd($email);
+            $stmt->bindParam(':email', $email);
             $stmt->execute();
 
             return true;
