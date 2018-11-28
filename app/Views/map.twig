@@ -234,6 +234,7 @@
         map.setOptions({styles: styles['silver']});
 
         var myoverlay = new google.maps.OverlayView();
+        //add id to all marker divs
         myoverlay.draw = function () {
             //this assigns an id to the markerlayer Pane, so it can be referenced by CSS
             this.getPanes().markerLayer.id='markerLayer';
