@@ -4,6 +4,7 @@
         height: 800px;
         background-color: grey;
     }
+
 </style>
 
 <div id="map">
@@ -14,15 +15,18 @@
 
 <script>
     // Initialize and add the map
+    var map="";
+    console.log(map);
     function initMap() {
         // The location of Uluru
         var uluru = {lat: 30.064742, lng: 31.249509};
         var uluru2 = {lat: 31.064742, lng: 31.249509};
         var uluru3 = {lat: 32.064742, lng: 31.249509};
         // The map, centered at Uluru
-        var map = new google.maps.Map(
+        map = new google.maps.Map(
                 document.getElementById('map'), {zoom: 7, center: uluru, mapTypeControl: false, streetViewControl: false});
 
+        console.log(map);
 
         var styles = {
             night: [
@@ -231,6 +235,17 @@
         map.setOptions({styles: styles['silver']});
 //        map.setOptions({styles: styles['night']});
     }
+
+    var overlay = new google.maps.OverlayView();
+    overlay.draw=function() {};
+
+    overlay.setMap(map);
+
+    var panes= "";
+    panes = overlay.getPanes();
+    console.log(panes);
+    var type = typeof panes;
+    console.log("xxx");
 
 
 </script>
