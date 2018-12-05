@@ -98,6 +98,22 @@ class DB
 
 
     }
+
+    public function getContactInfo()
+    {
+        //joining the classes and instructors tables to get the information on the classes plus the instructor giving the class
+        $stmt = $this->conn->prepare("select *, contact.email AS contactEmail, contact.address AS contactAddress,
+                                      contact.phone AS contactPhone
+                                      from {$this->dbname}.contact WHERE contact.id = '1'");
+
+
+        $stmt->execute();
+        // set the resulting array to associative
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll();
+
+        return $result;
+    }
 //
 //    //get all the classes offered by the gym as well as the information for the instructor giving the class
 //    public function getClasses()

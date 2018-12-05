@@ -53,9 +53,14 @@
         {{ include('subscribe.twig') }}
 
 
-        {# Contact Block #}
-        {{ include('contact.twig') }}
+    {% set contact_address = contactInfo.0.address %}
+    {% set contact_email = contactInfo.0.email %}
+    {% set contact_phone = contactInfo.0.phone %}
 
+
+
+    {# Contact Block #}
+    {{ include('contact.twig') }}
 
 
 {% endblock body %}

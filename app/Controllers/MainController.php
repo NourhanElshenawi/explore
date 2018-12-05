@@ -14,7 +14,9 @@ class MainController extends Controller
 /*****HOME*****/
     public function index()
     {
-        echo $this->twig->render('index.twig');
+        $db = new DB();
+        $contactInfo = $db->getContactInfo();
+        echo $this->twig->render('index.twig', array('contactInfo'=> $contactInfo));
 //        echo $this->twig->render('mapStyle.twig');
     }
 
