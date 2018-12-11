@@ -1,1 +1,31 @@
 {% extends "master.twig" %}
+
+    {% block body %}
+
+
+        <!-- Signin Section -->
+        <section id="signin" class="signup-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 mx-auto text-center">
+
+                        <i class="far fa-paper-plane fa-2x mb-2 text-white"></i>
+                        <i class="fal fa-sign-in fa-2x mb-2 text-white"></i>
+                        <h2 class="text-white mb-5">Enter your Email and Password to login!</h2>
+
+                        <form class="form" action="/login" method="post">
+                            <input type="email" name="email" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="email" placeholder="Email">
+                            <br>
+                            <input type="password" name="password" class="form-control flex-fill mr-0 mr-sm-2 mb-3 mb-sm-0" id="password" placeholder="Password">
+                            <br>
+                            <button type="submit" class="btn btn-primary mx-auto">Login</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+    {% endblock body %}
