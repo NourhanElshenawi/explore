@@ -20,5 +20,10 @@ class MainController extends Controller
 //        echo $this->twig->render('mapStyle.twig');
     }
 
+    public function login()
+    {
+        echo $this->twig->render('login.twig');
+    }
+
 
 }
