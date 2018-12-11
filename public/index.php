@@ -27,6 +27,7 @@ $router = new Router\Router();
 /** PUBLIC **/
 $router->get('/', 'MainController', 'index');
 $router->post('/subscribe', 'SubsController', 'subscribe');
+$router->get('/login', 'MainController', 'login');
 
 
 ////See inside $router
