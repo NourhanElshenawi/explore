@@ -27,41 +27,7 @@ use PayPal\Api\Payment;
 class UserController extends Controller
 {
 
-
-/** Signin **/
-    public function signin() {
-        $db = new DB();
-        $date = date_create();
-        $user = $db->getUserProfile($_GET['userID']);
-        $classes = $this->getUserClasses($_GET['userID']);
-        $classes = beautifyClassesForCalendar($classes);
-        //check if user is already in gym
-        $test = $db->userInGym($_GET['userID']);
-
-        if($test) {
-            //if user is in the gym log him out
-            $db->signout($_GET['userID'],date_format($date, 'Y-m-d H:i:s'));
-//            echo $this->twig->render('admin/customerProfile.twig', array('user'=>$user, 'classes'=>$classes));
-
-        } else {
-            //if user is not in the gym log him in
-            $db->signin($_GET['userID'],date_format($date, 'Y-m-d H:i:s'));
-            echo $this->twig->render('admin/customerProfile.twig', array('user'=>$user, 'classes'=>$classes));
-        }
-
-//        2012-06-18 10:34:09
-//        d($db->getUserLogin("1"));
-//        http://athletics-deree.app/signin?userID=1
-//       http://athletics-deree.app/?name1=value1&name2=value2
-    }
-
-
     public function login()
-    {
-        echo $this->twig->render('login.twig');
-    }
-
-    public function userLogin()
     {
         // check if a user is logged in at the moment. if he is the session user should be set
         if(isset($_SESSION['user'])){
@@ -71,17 +37,19 @@ class UserController extends Controller
         else {
             $db = new DB();
             //get any user with the collected credentials
-            $user = $db->getUser($_POST["username"], $_POST["password"]);
+            $user = $db->getUser($_POST["email"], $_POST["password"]);
 
             //check if there was indeed a user found matching these credentials
             if (empty($user)) {
                 $error['message'] = "Invalid Credentials!";
-                echo $this->twig->render('login.twig', array('error'=>$error));
+                echo $this->twig->render('error.twig', array('error'=>$error));
             }
             //if a user was found with these credentials, set the session user variable with all his information
             else {
                 $_SESSION['user'] = $user;
-                redirect('/profile');
+//                redirect('/profile');
+
+                echo $this->twig->render('error.twig', array('error'=>$user));
             }
 
         }

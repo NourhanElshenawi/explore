@@ -114,6 +114,27 @@ class DB
 
         return $result;
     }
+
+    public function getUser($email, $password)
+    {
+        try {
+            $stmt = $this->conn->prepare("select *, users.id AS id from {$this->dbname}.users
+                                          WHERE users.email = ? and users.password = ?");
+            $stmt->bindValue(1, $email);
+            $stmt->bindValue(2, $password);
+            $stmt->execute();
+            // set the resulting array to associative
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $result = $stmt->fetch();
+
+        } catch (PDOException $e) {
+            $result["success"] = 0;
+            $result["message"] = "User Not Found. Please Try Again!";
+        }
+
+        return $result;
+    }
+
 //
 //    //get all the classes offered by the gym as well as the information for the instructor giving the class
 //    public function getClasses()
@@ -209,27 +230,7 @@ class DB
 //        return $result;
 //    }
 //
-//    public function getUser($email, $password)
-//    {
-//        try {
-//            $stmt = $this->conn->prepare("select *, users.id AS id, instructors.id as instructorID from {$this->dbname}.users
-//                                          LEFT JOIN {$this->dbname}.instructors
-//                                          on {$this->dbname}.users.id = {$this->dbname}.instructors.userID
-//                                          WHERE users.email = ? and users.password = ?");
-//            $stmt->bindValue(1, $email);
-//            $stmt->bindValue(2, $password);
-//            $stmt->execute();
-//            // set the resulting array to associative
-//            $stmt->setFetchMode(PDO::FETCH_ASSOC);
-//            $result = $stmt->fetch();
-//
-//        } catch (PDOException $e) {
-//            $result["success"] = 0;
-//            $result["message"] = "Database Error1. Please Try Again!";
-//        }
-//
-//        return $result;
-//    }
+
 //
 //    public function getUserByEmail($email)
 //    {

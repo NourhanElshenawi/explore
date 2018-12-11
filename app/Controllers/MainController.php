@@ -23,6 +23,11 @@ class MainController extends Controller
     public function login()
     {
         echo $this->twig->render('login.twig');
+
+//        if(isset($_POST['email']))
+//        {
+//            var_dump($_POST);
+//        }
     }
 
 
