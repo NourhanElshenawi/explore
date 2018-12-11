@@ -65,38 +65,11 @@ class UserController extends Controller
     public function profile()
     {
         if(isLoggedIn()) {
-            $db = new DB();
 
-            $classes = $this->getUserClasses($_SESSION['user']['id']);
-            $classes = beautifyClassesForCalendar($classes);
+            echo $this->twig->render('user/profile.twig');
+        }
 
-            $dateOfPayment = explode(" ", $db->getLastPaymentByUser($_SESSION['user']['id'])['date'])[0];
-            $periodCoveredByPayment = daysDateDifference(date("Y-m-d"), $dateOfPayment);
-
-            if ($periodCoveredByPayment >= 31) {
-                $needToPay = true;
-            } else {
-                $needToPay = false;
-            }
-
-//            $certificate = date('Y') == $this->getLatestCertificate()['msg']['YEAR (user_certificates.uploaded_at)'];
-            $certificate = $this->getLatestCertificate()['msg'];
-            $certificate['YEAR (user_certificates.uploaded_at)'] = date('Y') == $certificate['YEAR (user_certificates.uploaded_at)'];
-            d($certificate);
-
-            $paymentSuccess = $db->getLastPaymentByUser($_SESSION['user']['id']);
-            if (isset($_GET['success'])) {
-                if ($db->addPayment($_GET['paymentId'], $_GET['token'], $_GET['PayerID'], $_SESSION['user']['id'])) {
-                    $paymentSuccess = true;
-                } else {
-                    $paymentSuccess = "Please contact support regarding your last Payment!";
-                }
-            } else if (!isset($_GET['success'])) {
-                $paymentSuccess = false;
-            }
-
-            echo $this->twig->render('customer/profile.twig', array('classes' => $classes, 'needToPay' => $needToPay,'certificate'=>$certificate, 'paymentSuccess' => $paymentSuccess));
-        } else{
+        else{
             redirect('/');
         }
     }

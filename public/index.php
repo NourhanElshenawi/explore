@@ -28,8 +28,13 @@ $router = new Router\Router();
 $router->get('/', 'MainController', 'index');
 $router->post('/subscribe', 'SubsController', 'subscribe');
 $router->get('/login', 'MainController', 'login');
+
+/** USER **/
+
 $router->post('/login', 'UserController', 'login');
 $router->get('/logout', 'UserController', 'logout');
+
+$router->get('/profile', 'UserController', 'profile');
 
 
 ////See inside $router
