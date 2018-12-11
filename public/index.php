@@ -29,6 +29,7 @@ $router->get('/', 'MainController', 'index');
 $router->post('/subscribe', 'SubsController', 'subscribe');
 $router->get('/login', 'MainController', 'login');
 $router->post('/login', 'UserController', 'login');
+$router->get('/logout', 'UserController', 'logout');
 
 
 ////See inside $router

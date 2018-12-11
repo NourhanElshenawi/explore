@@ -31,7 +31,7 @@ class UserController extends Controller
     {
         // check if a user is logged in at the moment. if he is the session user should be set
         if(isset($_SESSION['user'])){
-            redirect('/profile');
+            redirect('/');
         }
         // if a user is not logged in attempt to login
         else {
@@ -47,9 +47,7 @@ class UserController extends Controller
             //if a user was found with these credentials, set the session user variable with all his information
             else {
                 $_SESSION['user'] = $user;
-//                redirect('/profile');
-
-                echo $this->twig->render('error.twig', array('error'=>$user));
+                redirect('/');
             }
 
         }
@@ -59,7 +57,7 @@ class UserController extends Controller
     {
         //remove session user variable as the user will logout
         unset($_SESSION['user']);
-        redirect('/login');
+        redirect('/');
     }
 
 
