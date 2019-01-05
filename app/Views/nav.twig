@@ -21,14 +21,19 @@
                 <li class="nav-item">
                     <a class="nav-link js-scroll-trigger" href="/#signup">Contact</a>
                 </li>
-                <li class="nav-item">
 
-                    {% if session.user is defined %}
+                {% if session.user is defined %}
+                    <li class="nav-item">
+                        <a class="nav-link js-scroll-trigger" href="/Profile">Profile</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="/logout">Logout</a>
-                    {% else %}
+                    </li>
+                {% else %}
+                    <li class="nav-item">
                         <a class="nav-link js-scroll-trigger" href="/login">Login</a>
-                    {% endif %}
-                </li>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </div>
