@@ -302,3 +302,15 @@ a:focus, a:hover {
 footer {
   padding: 5rem 0;
 }
+
+
+/*
+mine
+*/
+
+
+.general-section {
+  padding: 10rem 0;
+  background-color: #161616;
+  background-size: cover;
+}
